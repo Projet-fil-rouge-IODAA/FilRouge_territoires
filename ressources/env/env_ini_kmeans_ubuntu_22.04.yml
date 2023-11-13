@@ -183,4 +183,3 @@ dependencies:
       - matplotlib==3.7.3
       - opencv-python==4.8.1.78
       - pillow==10.1.0
-prefix: /home/julian/miniconda3/envs/fil_rouge
