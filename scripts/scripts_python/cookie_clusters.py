@@ -31,7 +31,7 @@ def dtw(x, x_prime):
 def dtw_matrice(x, centroides):
     '''
     Fonction que généralise la fonction "dwt" á l’échelle de la matrice.
-    Retourne la matrice de distances entre tous les elements de la 
+    Retourne la matrice de distances entre tous les elements de la
     matrice de données.
     '''
     distances = np.zeros((len(x), len(centroides)))
