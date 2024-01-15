@@ -5,7 +5,11 @@ Cookie_tools.py est un fichier qui garde les fonctions nécessaires
 from scipy.spatial import distance
 import collections
 import numpy as np
+import pandas as pd
 import math
+from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
+from sklearn.metrics import calinski_harabasz_score
 
 # mesure de similarité dtw entre deux séries temporelles.
 # x = un pixel sur un intervalle de temps.
@@ -29,26 +33,29 @@ def create_dic_pixels():
     pix_danone = [[383, 497], [383, 500], [387, 501], [383, 504], [387, 505],
                 [384, 508], [388, 509], [384, 504], [386, 504]]  # ca ne change pas
 
-    return {'pix_foret':pix_foret, 'pix_lac':pix_lac, 'pix_apt':pix_apt,  
-            'pix_ensta':pix_ensta, 'pix_agri':pix_agri, 'pix_danone':pix_danone}
+    dic = {'pix_foret':pix_foret, 'pix_lac':pix_lac, 'pix_apt':pix_apt,
+           'pix_ensta':pix_ensta, 'pix_agri':pix_agri, 'pix_danone':pix_danone}
+    list = pix_foret + pix_lac + pix_apt + pix_ensta + pix_agri + pix_danone
+
+    return (list, dic)
 
 
 def dtw(x, x_prime):
     '''
     Cette fonction mesure la distance dwt entre deux séries temporelles.
     '''
-    R = np.zeros((len(x), len(x_prime)))
+    r = np.zeros((len(x), len(x_prime)))
     for i in range(len(x)):
         for j in range(len(x_prime)):
-            R[i, j] = distance.euclidean(x[i], x_prime[j]) ** 2
+            r[i, j] = distance.euclidean(x[i], x_prime[j]) ** 2
             if i > 0 or j > 0:
-                R[i, j] += min(
-                    R[i-1, j] if i > 0 else math.inf,
-                    R[i, j-1] if j > 0 else math.inf,
-                    R[i-1, j-1] if (i > 0 and j > 0) else math.inf
+                r[i, j] += min(
+                    r[i-1, j] if i > 0 else math.inf,
+                    r[i, j-1] if j > 0 else math.inf,
+                    r[i-1, j-1] if (i > 0 and j > 0) else math.inf
                 )
 
-    return R[-1, -1] ** (1/2)
+    return r[-1, -1] ** (1/2)
 
 
 def dtw_matrice(x, centroides):
@@ -100,22 +107,39 @@ def kmeans_dtw(x, k, no_of_iterations):
 
     return points
 
+
 class evaluator_de_experiences:
     '''
     Classe qui permet d'evaluer les resultats des differents approches
     de clustering.
     '''
-    def __init__(self, pixels_de_interet, yhat) -> None:
-           self.pixels = pixels_de_interet
-           self.yhat = yhat
+    def __init__(self, yhat, pix_list, pix_dic, matrice) -> None:
 
-    def evaluer(yhat,pix_interet):
+        self.pix_list = pix_list
+        self.pix_dic = pix_dic
+        self.yhat = yhat
+        self.matrice = matrice
+
+        classes = list()
+        for i in self.pix_list:
+            for j, k in zip(list(self.pix_dic.keys()), range(0, len(list(self.pix_dic.keys())))):
+                if i in list(self.pix_dic[j]):
+                    classes.append(k)
+        yhat = pd.DataFrame(yhat)
+        yhat_double = pd.DataFrame()
+        yhat_double['cluster'] = yhat
+        yhat_double['class'] = classes
+        max_class = yhat_double.groupby('cluster').agg(lambda x:x.value_counts().index[0])
+        new_yhat = pd.DataFrame()
+        new_yhat['cluster'] = yhat_double['cluster'].map(max_class['class'])
+
+        self.y_hat_clas = new_yhat.to_numpy().squeeze()
+        self.y_reel = pd.DataFrame(classes).to_numpy().squeeze()
+
+    def list(self):
         '''
         Fonction qui affiche les clusters et les pixels qui les composent.
-        Ainsi comme une matrice de confusion et certaines metriques permettant
-        de evaluer la qualité du clustering. Et la qualité de la classification.
         '''
-
         name = ''
         dico = collections.Counter(yhat)
         for key in list(dico.keys()):
@@ -136,3 +160,30 @@ class evaluator_de_experiences:
             for part in dico[key]:
                 print(f'{part}')
             print('-------------------------------')
+
+    def metrics_classif(self):
+        '''
+        Fonction qui permet de calculer les metrics de classification.
+        '''
+        # return pd.DataFrame({'accuracy':accuracy_score(self.y_reel, self.y_hat_classif),
+        #                     'precision':precision_score(self.y_reel, self.y_hat_classif),
+        #                     'recall':recall_score(self.y_reel, self.y_hat_classif),
+        #                     'f1_score':f1_score(self.y_reel, self.y_hat_classif)})
+        # return pd.DataFrame({'accuracy': accuracy_score(self.y_reel, self.y_hat_clas)})
+        return(accuracy_score(self.y_reel, self.y_hat_clas))
+
+    def metrics_clustering(self):
+        '''
+        Fonction qui permet de calculer les metrics de clustering.
+        '''
+        # return pd.DataFrame({'calinski_harabasz_score':calinski_harabasz_score(self.matrice, self.yhat)})
+        return calinski_harabasz_score(self.matrice, self.yhat)
+
+    def confusion_matrix(self):
+        '''
+        Fonction qui permet de calculer la matrice de confusion.
+        '''
+        cm = confusion_matrix(self.y_reel, self.y_hat_clas)
+        # plot the confusion matrix
+        disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=list(self.pix_dic.keys()))
+        disp.plot()
