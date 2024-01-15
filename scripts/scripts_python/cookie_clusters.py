@@ -19,7 +19,6 @@ def create_dic_pixels():
     '''
     Fonction qui permet de creer un dictionnaire avec les pixels de
     chaque type d'evolution.
-    Is this working?
     '''
     pix_foret = [[472, 570], [474, 570], [476, 570], [478, 570], [480, 570],
                 [482, 570], [484, 570], [486, 570], [488, 570]]  # ca change uniformement (saison)
