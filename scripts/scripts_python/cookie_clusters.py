@@ -2,6 +2,8 @@
 Cookie_tools.py est un fichier qui garde les fonctions nécessaires
 à faire plusieurs operations spécifiques du projet fil_rouge.
 '''
+# TODO: docstrings documentation for all functions.
+# Importation des librairies
 from scipy.spatial import distance
 import matplotlib.pyplot as plt
 import numpy as np
@@ -10,9 +12,6 @@ import math
 from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
 from sklearn.metrics import accuracy_score, f1_score
 from sklearn.metrics import calinski_harabasz_score
-
-# mesure de similarité dtw entre deux séries temporelles.
-# x = un pixel sur un intervalle de temps.
 
 
 def create_dic_pixels():
@@ -39,7 +38,8 @@ def create_dic_pixels():
 
     return (list, dic)
 
-
+# Probably this function is not necessary from 17/01/2024.
+# TODO: check and eventually delete this function.
 def dtw(x, x_prime):
     '''
     Cette fonction mesure la distance dwt entre deux séries temporelles.
@@ -57,7 +57,8 @@ def dtw(x, x_prime):
 
     return r[-1, -1] ** (1/2)
 
-
+# Probably this function is not necessary from 17/01/2024.
+# TODO: check and eventually delete this function.
 def dtw_matrice(x, centroides):
     '''
     Fonction que généralise la fonction "dwt" á l'échelle de la matrice.
@@ -76,7 +77,8 @@ def dtw_matrice(x, centroides):
         index_j = 0
     return distances
 
-
+# Probably this function is not necessary from 17/01/2024.
+# TODO: check and eventually delete this function.
 def kmeans_dtw(x, k, no_of_iterations):
     '''
     K-means qu'utilise comme fonction de distance le dynamic time warping 
