@@ -171,5 +171,5 @@ class evaluator_de_experiences(object):
         '''
         cm = confusion_matrix(self.y_reel, self.y_hat_clas)
         # plot the confusion matrix
-        disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=list(self.pix_dic.keys()))
+        disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=list(self.pix_dic.keys()), colorbar=False)
         disp.plot()
