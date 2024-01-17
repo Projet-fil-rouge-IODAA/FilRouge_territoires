@@ -3,7 +3,7 @@ Cookie_tools.py est un fichier qui garde les fonctions nécessaires
 à faire plusieurs operations spécifiques du projet fil_rouge.
 '''
 from scipy.spatial import distance
-import collections
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import math
@@ -170,6 +170,11 @@ class evaluator_de_experiences(object):
         Fonction qui permet de calculer la matrice de confusion.
         '''
         cm = confusion_matrix(self.y_reel, self.y_hat_clas)
+        cmd = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=list(self.pix_dic.keys()))
         # plot the confusion matrix
-        disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=list(self.pix_dic.keys()), colorbar=False)
-        disp.plot()
+        fig, ax = plt.subplots(figsize=(5, 5))
+        cmd.plot(colorbar=False, ax=ax)
+        ax.set_title('Confusion Matrix')
+        ax.set_xticks(range(len(list(self.pix_dic.keys()))))
+        ax.set_xticklabels(list(self.pix_dic.keys()), rotation=45)
+        plt.plot()
