@@ -128,7 +128,7 @@ class evaluator_de_experiences(object):
         df = pd.DataFrame(dic_dist)
         # Create a heatmap
         plt.figure(figsize=(10, 7))
-        sns.heatmap(df, annot=True, fmt='d', cmap='viridis')
+        sns.heatmap(df, annot=True, fmt='d', cmap='viridis', cbar=False)
 
         # Label the plot
         plt.title('Cluster Distribution')
@@ -137,4 +137,3 @@ class evaluator_de_experiences(object):
 
         # Display the plot
         plt.show()
-
