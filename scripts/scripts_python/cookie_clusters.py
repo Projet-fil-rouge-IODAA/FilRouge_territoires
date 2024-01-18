@@ -39,69 +39,7 @@ def create_dic_pixels():
            'pix_ensta': pix_ensta, 'pix_agri': pix_agri, 'pix_danone': pix_danone}
     list = pix_foret + pix_lac + pix_apt + pix_ensta + pix_agri + pix_danone
 
-    return (list, dic)
-
-def dtw_matrice(X, distance):
-    '''
-    Fonction que généralise la fonction "dtw" á l’échelle de la matrice.
-    Retourne la matrice de distances entre tous les elements de la
-    matrice de données.
-    La distance peut être : euclidean, ou cosine. (euclidienne par défaut)
-    '''
-    N=len(X)
-    R=np.zeros((N,N))
-    for i in range(N):
-        for j in range(N):
-            R[i,j]= dtw.fastdtw(X[i],X[j],dist=distance)[0]
-    return R
-
-def dtw_matrice_centroides(x, centroides, distance=euclidean):
-    '''
-    Fonction que généralise la fonction "dtw" á l’échelle de la matrice et des centroides kmeans.
-    '''
-    r = np.zeros((len(x), len(x_prime)))
-    for i in range(len(x)):
-        for j in range(len(x_prime)):
-            r[i, j] = distance.euclidean(x[i], x_prime[j]) ** 2
-            if i > 0 or j > 0:
-                r[i, j] += min(
-                    r[i-1, j] if i > 0 else math.inf,
-                    r[i, j-1] if j > 0 else math.inf,
-                    r[i-1, j-1] if (i > 0 and j > 0) else math.inf
-                )
-
-    return r[-1, -1] ** (1/2)
-
-def kmeans_dtw(x, k, no_of_iterations, distance):
-    '''
-    K-means qu'utilise comme fonction de distance le dynamic time warping 
-    '''
-    idx = np.random.choice(len(x), k, replace=False)
-    # Randomly choosing Centroids
-    centroids = x[idx, :]  # Step 1
-
-    # finding the distance between centroids and all the data points
-    distances = dtw_matrice_centroides(x, centroids, distance)  # Step 2
-
-    # Centroid with the minimum Distance
-    points = np.array([np.argmin(i) for i in distances])  # Step 3
-
-    # Repeating the above steps for a defined number of iterations
-    # Step 4
-    for _ in range(no_of_iterations):
-        centroids = []
-        for idx in range(k):
-            # Updating Centroids by taking mean of Cluster it belongs to
-            temp_cent = x[points == idx].mean(axis=0)
-            centroids.append(temp_cent)
-
-        centroids = np.vstack(centroids)  # Updated Centroids
-
-        distances = distance.cdist(x, centroids, 'euclidean')
-        points = np.array([np.argmin(i) for i in distances])
-
-    return points
-
+    return list, dic
 
 class evaluator_de_experiences(object):
     '''
