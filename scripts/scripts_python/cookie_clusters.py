@@ -15,6 +15,7 @@ from sklearn.metrics import calinski_harabasz_score
 import fastdtw as dtw
 from scipy.spatial.distance import euclidean
 from scipy.spatial.distance import cosine
+import seaborn as sns
 
 
 def create_dic_pixels():
@@ -111,3 +112,28 @@ class evaluator_de_experiences(object):
         ax.set_xticks(range(len(list(self.pix_dic.keys()))))
         ax.set_xticklabels(list(self.pix_dic.keys()), rotation=45)
         plt.plot()
+
+    def cluster_distribution(self):
+        '''
+        Fonction qui permet de calculer la distribution des clusters.
+        '''
+        unique_strings = np.unique(self.yhat.astype(str))
+        dic_dist = {s:{pix:0 for pix in list(self.pix_dic.keys())} for s in unique_strings}
+        for classe, coord in zip(self.yhat.astype(str), self.pix_list):
+            for key in dic_dist[classe]:
+                if coord in self.pix_dic[key]:
+                    dic_dist[classe][key] += 1
+
+        df = pd.DataFrame(dic_dist)
+        # Create a heatmap
+        plt.figure(figsize=(10, 7))
+        sns.heatmap(df, annot=True, fmt='d', cmap='viridis')
+
+        # Label the plot
+        plt.title('Cluster Distribution')
+        plt.xlabel('Class')
+        plt.ylabel('Cluster')
+
+        # Display the plot
+        plt.show()
+
