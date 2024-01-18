@@ -12,6 +12,9 @@ import math
 from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
 from sklearn.metrics import accuracy_score, f1_score
 from sklearn.metrics import calinski_harabasz_score
+import fastdtw as dtw
+from scipy.spatial.distance import euclidean
+from scipy.spatial.distance import cosine
 
 
 def create_dic_pixels():
@@ -38,11 +41,23 @@ def create_dic_pixels():
 
     return (list, dic)
 
-# Probably this function is not necessary from 17/01/2024.
-# TODO: check and eventually delete this function.
-def dtw(x, x_prime):
+def dtw_matrice(X, distance):
     '''
-    Cette fonction mesure la distance dwt entre deux séries temporelles.
+    Fonction que généralise la fonction "dtw" á l’échelle de la matrice.
+    Retourne la matrice de distances entre tous les elements de la
+    matrice de données.
+    La distance peut être : euclidean, ou cosine. (euclidienne par défaut)
+    '''
+    N=len(X)
+    R=np.zeros((N,N))
+    for i in range(N):
+        for j in range(N):
+            R[i,j]= dtw.fastdtw(X[i],X[j],dist=distance)[0]
+    return R
+
+def dtw_matrice_centroides(x, centroides, distance=euclidean):
+    '''
+    Fonction que généralise la fonction "dtw" á l’échelle de la matrice et des centroides kmeans.
     '''
     r = np.zeros((len(x), len(x_prime)))
     for i in range(len(x)):
@@ -57,29 +72,7 @@ def dtw(x, x_prime):
 
     return r[-1, -1] ** (1/2)
 
-# Probably this function is not necessary from 17/01/2024.
-# TODO: check and eventually delete this function.
-def dtw_matrice(x, centroides):
-    '''
-    Fonction que généralise la fonction "dwt" á l'échelle de la matrice.
-    Retourne la matrice de distances entre tous les elements de la
-    matrice de données.
-    '''
-    distances = np.zeros((len(x), len(centroides)))
-    index_i = 0
-    index_j = 0
-    for i in x:
-        for j in centroides:
-            distances[index_i, index_j] = dtw(
-                i.reshape(-1, 1), j.reshape(-1, 1))
-            index_j += 1
-        index_i += 1
-        index_j = 0
-    return distances
-
-# Probably this function is not necessary from 17/01/2024.
-# TODO: check and eventually delete this function.
-def kmeans_dtw(x, k, no_of_iterations):
+def kmeans_dtw(x, k, no_of_iterations, distance):
     '''
     K-means qu'utilise comme fonction de distance le dynamic time warping 
     '''
@@ -88,7 +81,7 @@ def kmeans_dtw(x, k, no_of_iterations):
     centroids = x[idx, :]  # Step 1
 
     # finding the distance between centroids and all the data points
-    distances = dtw_matrice(x, centroids)  # Step 2
+    distances = dtw_matrice_centroides(x, centroids, distance)  # Step 2
 
     # Centroid with the minimum Distance
     points = np.array([np.argmin(i) for i in distances])  # Step 3
