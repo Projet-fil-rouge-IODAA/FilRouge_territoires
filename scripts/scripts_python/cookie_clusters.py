@@ -86,7 +86,7 @@ def dtw_matrice_centroides(x, centroides, distance=euclidean):
     index_j = 0
     for i in x:
         for j in centroides:
-            distances[index_i, index_j] = dtw.fastdtw(i.reshape(-1, 1), j.reshape(-1, 1),dist=distance)
+            distances[index_i, index_j] = dtw.fastdtw(i.reshape(-1, 1), j.reshape(-1, 1),dist=distance)[0]
             index_j += 1
         index_i += 1
         index_j = 0
