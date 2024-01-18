@@ -61,12 +61,13 @@ class evaluator_de_experiences(object):
         yhat_double = pd.DataFrame()
         yhat_double['cluster'] = yhat
         yhat_double['class'] = classes
+        yhat_double = yhat_double[yhat_double['cluster'] >= 0]
         max_class = yhat_double.groupby('cluster').agg(lambda x:x.value_counts().index[0])
         new_yhat = pd.DataFrame()
         new_yhat['cluster'] = yhat_double['cluster'].map(max_class['class'])
 
         self.y_hat_clas = new_yhat.to_numpy().squeeze()
-        self.y_reel = pd.DataFrame(classes).to_numpy().squeeze()
+        self.y_reel = yhat_double['class'].to_numpy().squeeze()
 
     def show_list(self):
         '''
