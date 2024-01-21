@@ -1,0 +1,6 @@
+### ressources (images) ###
+data/images/
+###########################
+results_coupure/
+### scripts_python cache ###
+scripts_python/__pycache__/
