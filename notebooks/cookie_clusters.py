@@ -2,45 +2,16 @@
 Cookie_tools.py est un fichier qui garde les fonctions nécessaires
 à faire plusieurs operations spécifiques du projet fil_rouge.
 '''
-# TODO: docstrings documentation for all functions.
+# TODO: docstrings documentation for all methodes.
 # Importation des librairies
-from scipy.spatial import distance
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-import math
 from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
 from sklearn.metrics import accuracy_score, f1_score
 from sklearn.metrics import calinski_harabasz_score
-import fastdtw as dtw
-from scipy.spatial.distance import euclidean
-from scipy.spatial.distance import cosine
 import seaborn as sns
 
-
-def create_dic_pixels():
-    '''
-    Fonction qui permet de creer un dictionnaire avec les pixels de
-    chaque type d'evolution.
-    '''
-    pix_foret = [[472, 570], [474, 570], [476, 570], [478, 570], [480, 570],
-                 [482, 570], [484, 570], [486, 570], [488, 570]]  # ca change uniformement (saison)
-    pix_lac = [[392, 567], [392, 580], [401, 577], [401, 567], [395, 570], 
-               [395, 576], [397, 571], [394, 598], [388, 532]]  # ca change un peu
-    pix_apt = [[405, 448], [408, 444], [412, 446], [412, 463], [407, 465],
-               [405, 455], [414, 440], [420, 458], [401, 446]]  # ca change (construction)
-    pix_ensta = [[447, 618], [454, 627], [454, 631], [457, 632], [459, 625],
-                 [450, 641], [443, 636], [439, 629], [433, 617]]  # ca change (construction)
-    pix_agri = [[318, 438], [322, 435], [324, 433], [329, 429], [333, 426],
-                [337, 424], [339, 422], [344, 418], [350, 414]]  # ca peut changer (saison, plantation)
-    pix_danone = [[383, 497], [383, 500], [387, 501], [383, 504], [387, 505],
-                  [384, 508], [388, 509], [384, 504], [386, 504]]  # ca ne change pas
-
-    dic = {'pix_foret': pix_foret, 'pix_lac': pix_lac, 'pix_apt': pix_apt,
-           'pix_ensta': pix_ensta, 'pix_agri': pix_agri, 'pix_danone': pix_danone}
-    list = pix_foret + pix_lac + pix_apt + pix_ensta + pix_agri + pix_danone
-
-    return list, dic
 
 class evaluator_de_experiences(object):
     '''
@@ -55,7 +26,8 @@ class evaluator_de_experiences(object):
 
         classes = list()
         for i in self.pix_list:
-            for j, k in zip(list(self.pix_dic.keys()), range(0, len(list(self.pix_dic.keys())))):
+            for j, k in zip(list(self.pix_dic.keys()),
+                            range(0, len(list(self.pix_dic.keys())))):
                 if i in list(self.pix_dic[j]):
                     classes.append(k)
         yhat = pd.DataFrame(yhat)
@@ -63,7 +35,8 @@ class evaluator_de_experiences(object):
         yhat_double['cluster'] = yhat
         yhat_double['class'] = classes
         yhat_double = yhat_double[yhat_double['cluster'] >= 0]
-        max_class = yhat_double.groupby('cluster').agg(lambda x:x.value_counts().index[0])
+        max_class = (yhat_double.groupby('cluster')
+                     .agg(lambda x: x.value_counts().index[0]))
         new_yhat = pd.DataFrame()
         new_yhat['cluster'] = yhat_double['cluster'].map(max_class['class'])
 
@@ -76,8 +49,9 @@ class evaluator_de_experiences(object):
         '''
         dico = {}
         for cluster in set(self.yhat):
-            pixels_in_cluster = np.array(self.pix_list)[self.yhat==cluster].tolist()
-            tmp = np.array(self.y_reel)[self.yhat==cluster].tolist()
+            pixels_in_cluster = (np.array(self.pix_list)
+                                 [self.yhat == cluster].tolist())
+            tmp = np.array(self.y_reel)[self.yhat == cluster].tolist()
             ett_of_pixels = [list(self.pix_dic.keys())[i] for i in tmp]
             dico[str(cluster)] = (pixels_in_cluster, ett_of_pixels)
         for key in dico:
@@ -90,22 +64,27 @@ class evaluator_de_experiences(object):
         '''
         Fonction qui permet de calculer les metrics de classification.
         '''
-        return pd.DataFrame({'accuracy': [accuracy_score(self.y_reel, self.y_hat_clas)],
-                             'f1_score': [f1_score(self.y_reel, self.y_hat_clas, average = 'macro')]})
+        return pd.DataFrame({'accuracy': [accuracy_score(self.y_reel,
+                                                         self.y_hat_clas)],
+                             'f1_score': [f1_score(self.y_reel,
+                                                   self.y_hat_clas,
+                                                   average='macro')]})
 
     def metrics_clustering(self):
         '''
         Fonction qui permet de calculer les metrics de clustering.
         '''
         return pd.DataFrame({'calinski_harabasz_score':
-                             [calinski_harabasz_score(self.matrice, self.yhat)]})
+                             [calinski_harabasz_score
+                              (self.matrice, self.yhat)]})
 
     def confusion_matrix(self):
         '''
         Fonction qui permet de calculer la matrice de confusion.
         '''
         cm = confusion_matrix(self.y_reel, self.y_hat_clas)
-        cmd = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=list(self.pix_dic.keys()))
+        cmd = ConfusionMatrixDisplay(confusion_matrix=cm,
+                                     display_labels=list(self.pix_dic.keys()))
         # plot the confusion matrix
         fig, ax = plt.subplots(figsize=(5, 5))
         cmd.plot(colorbar=False, ax=ax)
@@ -119,7 +98,8 @@ class evaluator_de_experiences(object):
         Fonction qui permet de calculer la distribution des clusters.
         '''
         unique_strings = np.unique(self.yhat.astype(str))
-        dic_dist = {s:{pix:0 for pix in list(self.pix_dic.keys())} for s in unique_strings}
+        dic_dist = {s: {pix: 0 for pix in list(self.pix_dic.keys())}
+                    for s in unique_strings}
         for classe, coord in zip(self.yhat.astype(str), self.pix_list):
             for key in dic_dist[classe]:
                 if coord in self.pix_dic[key]:
