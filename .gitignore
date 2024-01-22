@@ -1,6 +1,6 @@
-### ressources (images) ###
-data/images/
-###########################
-results_coupure/
-### scripts_python cache ###
+### data/raw/ (raw images) ###
+data/raw/
+#### data/processed/ (is created by build_features.py) ####
+data/processed/
+### notebooks cache ###
 notebooks/__pycache__/
