@@ -2,9 +2,11 @@
 import cv2
 import rasterio
 import numpy as np
+import json
 
+dict_px_lab = dict()
 
-def click_event(event, x, y, flags, params): 
+def click_event(event, x, y, flag, param): 
 	'''
 
 	'''
@@ -12,13 +14,11 @@ def click_event(event, x, y, flags, params):
 	if event == cv2.EVENT_LBUTTONDOWN:
 		# displaying the coordinates.
 		# on the Shell.
-		print(x, ' ', y) 
+		lab = cv2.getTrackbarPos('Label','image')
+		print(x, ' ', y, ' ', lab) 
+		dict_px_lab[str(x)+","+str(y)] = lab
 	# checking for right mouse clicks.
 	if event==cv2.EVENT_RBUTTONDOWN:
-		# displaying the coordinates.
-		# on the Shell 
-		print(x, ' ', y) 
-
 		# displaying the coordinates 
 		# on the image window 
 		font = cv2.FONT_HERSHEY_SIMPLEX
@@ -29,8 +29,14 @@ def click_event(event, x, y, flags, params):
 					str(g) + ',' + str(r),
 					(x,y), font, 1,
 					(255, 255, 0), 2)
+		cv2.putText(img, '1: Agriculture ; 2: Urban (constant) ; 3: Urban (former forest) ; 4: Urban (former cultures)',
+					(x,y), font, 1,
+					(255, 255, 0), 2)
 		cv2.imshow('image', img)
 
+
+def nothing(x):
+	pass
 
 # driver function 
 if __name__ == "__main__":
@@ -49,7 +55,12 @@ if __name__ == "__main__":
 	blue = ((blue-np.min(blue))/(np.max(blue)-np.min(blue)))*510
 	img = np.dstack((blue, green, red))
 	# displaying the image
+	cv2.putText(img, '1: Agriculture (constant) ; 2: Urban (constant) ; 3: Grass (airport) ; 4: Urban (former cultures) ; 5: Forest (constant) ; 6: Lake (constant)',
+			 (0, 950), cv2.FONT_HERSHEY_SIMPLEX,
+			 0.5, (255, 255, 255), 2)
 	cv2.imshow('image', img.astype(np.uint8))
+
+	cv2.createTrackbar('Label','image',1,10,nothing)
 
 	# setting mouse handler for the image
 	# and calling the click_event() function
@@ -60,3 +71,23 @@ if __name__ == "__main__":
 
 	# close the window
 	cv2.destroyAllWindows()
+
+print(dict_px_lab)
+print("Started writing dictionary to a file.")
+
+with open("data/pixels/px_lab.txt", "w") as fp:
+	json.dump(dict_px_lab, fp)
+print("File ready.")
+
+
+dict_lab_px = dict()
+for k, v in dict_px_lab.items():
+	k = [int(x) for x in k.split(",")]
+	dict_lab_px.setdefault(v, []).append(k)
+
+print(dict_lab_px)
+print("Started writing dictionary to a file.")
+
+with open("data/pixels/lab_px.txt", "w") as fp:
+	json.dump(dict_lab_px, fp)
+print("File ready.")
