@@ -164,3 +164,11 @@ matrix_dic = {'vec_nir': matrice_nir, 'vec_red': matrice_rouge,
 for matrix in matrix_dic:
     data = pd.DataFrame(matrix_dic[matrix])
     data.to_csv(OUT_DIR + f'/{matrix}.csv', index=False)
+
+# --------------------- DFs for T2F ----------------------
+
+array3d = np.zeros((matrice_vert.shape[0], matrice_vert.shape[1], 6))
+for i, matrix in enumerate(list(matrix_dic.values())):
+    array3d[:, :, i] = matrix
+arr_reshaped = array3d.reshape(array3d.shape[0], -1)
+np.savetxt(OUT_DIR + f'/{array3d.shape}.csv', arr_reshaped, delimiter=',')
