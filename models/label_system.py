@@ -15,8 +15,8 @@ def click_event(event, x, y, flag, param):
         # displaying the coordinates.
         # on the Shell.
         lab = cv2.getTrackbarPos('Label', 'image')
-        print(x, ' ', y, ' ', lab)
-        dict_px_lab[str(x)+","+str(y)] = lab
+        print(y, ' ', x, ' ', lab)
+        dict_px_lab[str(y)+","+str(x)] = lab
     # checking for right mouse clicks.
     if event == cv2.EVENT_RBUTTONDOWN:
         # displaying the coordinates
@@ -27,11 +27,11 @@ def click_event(event, x, y, flag, param):
         r = img[y, x, 2]
         cv2.putText(img, str(b) + ',' +
                     str(g) + ',' + str(r),
-                    (x, y), font, 1,
+                    (y, x), font, 1,
                     (255, 255, 0), 2
                     )
         cv2.putText(img, ("1: Agriculture ; 2: Urban (constant) ; 3: Urban (former forest) ; 4: Urban (former cultures)"),
-                    (x, y), font, 1,
+                    (y, x), font, 1,
                     (255, 255, 0), 2)
         cv2.imshow('image', img)
 
@@ -73,14 +73,6 @@ if __name__ == "__main__":
 
     # close the window
     cv2.destroyAllWindows()
-
-print(dict_px_lab)
-print("Started writing dictionary to a file.")
-
-with open("data/pixels/px_lab.txt", "w") as fp:
-    json.dump(dict_px_lab, fp)
-print("File ready.")
-
 
 dict_lab_px = dict()
 for k, v in dict_px_lab.items():
