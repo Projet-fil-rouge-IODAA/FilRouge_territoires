@@ -30,7 +30,9 @@ def click_event(event, x, y, flag, param):
                     (x, y), font, 1,
                     (255, 255, 0), 2
                     )
-        cv2.putText(img, ("1: Agriculture ; 2: Urban (constant) ; 3: Urban (former forest) ; 4: Urban (former cultures)"),
+        cv2.putText(img, ("1: Agriculture ; 2: Urban (constant) ;\
+                          3: Urban (former forest) ;\
+                          4: Urban (former cultures)"),
                     (x, y), font, 1,
                     (255, 255, 0), 2)
         cv2.imshow('image', img)
@@ -43,7 +45,8 @@ def nothing():
 # driver function
 if __name__ == "__main__":
     # path of the image
-    path_image = 'data/raw/crop_SENTINEL2B_20211109-110724-649_L2A_T31UDQ_C_V3-0.tif'
+    path_image = 'data/raw/crop_SENTINEL2B_\
+        20211109-110724-649_L2A_T31UDQ_C_V3-0.tif'
     # reading the image
     src = rasterio.open(path_image)
     red = src.read(2)
@@ -56,7 +59,9 @@ if __name__ == "__main__":
     blue = ((blue-np.min(blue))/(np.max(blue)-np.min(blue)))*510
     img = np.dstack((blue, green, red))
     # displaying the image
-    cv2.putText(img, '1: Agriculture (constant) ; 2: Urban (constant) ; 3: Grass (airport) ; 4: Urban (former cultures) ; 5: Forest (constant) ; 6: Lake (constant)',
+    cv2.putText(img, '1: Agriculture (constant) ; 2: Urban (constant) ;\
+                3: Grass (airport) ; 4: Urban (former cultures) ;\
+                5: Forest (constant) ; 6: Lake (constant)',
                 (0, 950), cv2.FONT_HERSHEY_SIMPLEX,
                 0.5, (255, 255, 255), 2
                 )
