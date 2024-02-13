@@ -26,7 +26,6 @@ def find_num_clusters(data, k_min, k_max, model_type, plot_elbow = False, **kwar
             sse, vecs = np.linalg.eig(model.affinity_matrix_)
             sse = np.sort(sse)[::-1]
             sse = sse[k_min:k_max+1]
-            print(sse.shape)
         else:
             for k in range(k_min, k_max+1):
                 if model_type == 'KMedoids':
