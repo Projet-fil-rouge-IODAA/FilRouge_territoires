@@ -15,8 +15,9 @@ OUT_DIR = "data/processed"
 if os.path.exists(OUT_DIR):
     shutil.rmtree(OUT_DIR)
 os.mkdir(OUT_DIR)
+name = input("What type of pixel sample do you wish to use? (big, small)")
 
-name_file = "data/pixels/lab_px_test_"+sys.argv[1]+".txt"
+name_file = "data/pixels/lab_px_test_"+name+".txt"
 
 def create_dic_pixels(name_file):
     '''
