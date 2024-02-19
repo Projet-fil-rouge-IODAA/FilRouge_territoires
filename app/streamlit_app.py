@@ -14,8 +14,10 @@ def main():
     st.title("Caractérisation de l'évolution du territoire 🗺️")
     st.header("Un approache par clustering de series temporelles.")
     st.subheader("Projet fil Rouge - IODAA 2024.")
-    st.markdown(f"**Auteurs**: Afonso Ponce, Julian Agudelo, Matthieu Verlynde, Nada Kassara, Malek Baroudi.")
-    # add a subtitle
+    st.markdown("**Auteurs**: Afonso Ponce, Julian Agudelo, \
+                Matthieu Verlynde, \
+                Nada Kassara, Malek Baroudi.")
+    # Introduction
     st.subheader("Introduction")
     st.write("Cette application est un moyen simple de \
              visualiser et d'utiliser \
@@ -37,10 +39,13 @@ def main():
              de clustering ainsi que le nombre de clusters \
              qu'il souhaite générer.")
 
-    st.slider("Sélectionnez le nombre de clusters", min_value=0, max_value=40)
-    st.selectbox('Sélectionnez la méthodologie à utiliser',
+    # Utilisez les modèles
+    st.subheader("Utilisez les modèles")
+    st.slider("Sélectionnez le nombre de clusters: ", min_value=0, max_value=40)
+    st.selectbox('Sélectionnez la méthodologie à utiliser: ',
                  ["Time2feat", "Combinaison de clusterings"])
     st.button("Lancer")
+
 
 if __name__ == "__main__":
     main()

@@ -4,9 +4,13 @@ Cookie_tools.py est un fichier qui garde les fonctions nécessaires
 '''
 # TODO: docstrings documentation for all methodes.
 # Importation des librairies
-import matplotlib.pyplot as plt
+import os
 import numpy as np
 import pandas as pd
+import matplotlib.pyplot as plt
+from mpl_toolkits.axes_grid1 import make_axes_locatable
+from matplotlib import colors
+import rasterio
 from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
 from sklearn.metrics import accuracy_score, f1_score
 from sklearn.metrics import calinski_harabasz_score
@@ -117,3 +121,61 @@ class evaluator_de_experiences(object):
 
         # Display the plot
         plt.show()
+
+
+class afficheur_de_resultats(object):
+    '''
+    Classe qui permet d'afficher un vecteur de resultats
+    sur une des images satellitaires.
+    '''
+    def __init__(self, image_path, yhat, pix_list) -> None:
+        self.image_path = image_path
+        self.yhat = yhat
+        self.pix_list = pix_list
+        self.class_colors = ['r', 'g', 'b', 'y', 'm', 'c', 'orange', 'purple',
+                             'pink', 'brown', 'lime', 'teal', 'olive', 'navy',
+                             'maroon', 'aqua', 'fuchsia', 'silver', 'gray',
+                             'black', 'indigo', 'coral', 'gold', 'darkgreen',
+                             'darkblue', 'darkred', 'darkorange', 'darkviolet',
+                             'darkgray', 'lightgray']
+
+    def create_image(self, name_image):
+        '''
+        Fonction qui permet d'afficher les clusters sur l'image.
+        '''
+        OUT_DIR = 'results/'
+
+        if os.path.exists(OUT_DIR) is False:
+            os.mkdir(OUT_DIR)
+
+        src = rasterio.open(self.image_path)
+        red = src.read(2)
+        green = src.read(3)
+        blue = src.read(4)
+
+        redn = (red/6).astype(int)
+        greenn = (green/6).astype(int)
+        bluen = (blue/6).astype(int)
+
+        # Create RGB natural color composite
+        rgb = np.dstack((redn, greenn, bluen))
+        # Create the results matrix
+        results = np.zeros((rgb.shape[0], rgb.shape[1]))
+        for i in range(0, len(self.pix_list)):
+            results[self.pix_list[i][0], self.pix_list[i][1]] = self.yhat[i]+1
+        # changes 0 to nan
+        results[results == 0] = np.nan
+        results[:50, :50] = 4
+
+        cookie_map = colors.ListedColormap(self.class_colors
+                                           [:len(np.unique(self.yhat))])
+
+        # Let's see how our color composite looks like
+        plt.figure(figsize=(rgb.shape[1]/100, rgb.shape[0]/100), dpi=100)
+        ax = plt.gca()
+        ax.imshow(rgb, alpha=0.3)
+        clusters = ax.imshow(results, cmap=cookie_map)
+        divider = make_axes_locatable(ax)
+        cax = divider.append_axes("right", size="2%", pad=0.2)
+        plt.colorbar(clusters, cax=cax)
+        plt.savefig(f"results/{name_image}", dpi=300)
