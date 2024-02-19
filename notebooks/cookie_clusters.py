@@ -112,8 +112,8 @@ class evaluator_de_experiences(object):
 
         # Label the plot
         plt.title('Cluster Distribution')
-        plt.xlabel('Class')
-        plt.ylabel('Cluster')
+        plt.xlabel('Predicted_label')
+        plt.ylabel('True_label')
 
         # Display the plot
         plt.show()
