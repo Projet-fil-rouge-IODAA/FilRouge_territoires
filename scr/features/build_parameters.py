@@ -7,7 +7,7 @@ import scipy.cluster.hierarchy as shc
 from kneed import KneeLocator
 import matplotlib.pyplot as plt
 
-def find_num_clusters(data, k_min, k_max, model_type, plot_elbow = False, **kwargs):
+def find_num_clusters(data, model_type, k_min = 2, k_max = 10, plot_elbow = False, **kwargs):
     """
     This function finds the optimal number of clusters for a given dataset.
     """
@@ -17,13 +17,11 @@ def find_num_clusters(data, k_min, k_max, model_type, plot_elbow = False, **kwar
         sse = []
         if model_type == 'Hierarchical':
             model = shc.linkage(data, **kwargs)
-                # model = AgglomerativeClustering(n_clusters=k)
-                # model.fit(data)
-            sse = model[-10:, 2][::-1]
+            sse = model[-(k_max-k_min+1):, 2][::-1]
         elif model_type == 'Spectral':
             model = SpectralClustering(n_clusters=k_max, **kwargs)
             model.fit(data)
-            sse, vecs = np.linalg.eig(model.affinity_matrix_)
+            sse, _ = np.linalg.eig(model.affinity_matrix_)
             sse = np.sort(sse)[::-1]
             sse = sse[k_min:k_max+1]
         else:
