@@ -1,7 +1,6 @@
 # coding=utf-8
 import random as rd
 import numpy as np
-import random as rd
 
 
 class CollaborativeClustering():
@@ -31,19 +30,21 @@ class CollaborativeClustering():
                 j += 1
 
         # Matrice de confusion
-        confusion = [[len(matrice[j][i]) for i in range(n_clusters[0])] for j in range(sum(n_clusters[1:]))]
+        confusion = [[len(matrice[j][i]) for
+                      i in range(n_clusters[0])] for j in range(sum(n_clusters[1:]))]
         confusion = np.array(confusion).astype(dtype=np.float16)
 
         for i in range(confusion.shape[0]):
             for j in range(confusion.shape[1]):
-                confusion[i, j] = confusion[i, j]/(max(confusion[i, :].sum(), (confusion[:, j].sum()/(max(n_clusters[1:])-1))))  # max(n_vert,n_bleu) ou n_rouge??
+                confusion[i, j] = confusion[i, j]/(max(confusion[i, :].sum(),
+                                                       (confusion[:, j].sum()/(max(n_clusters[1:])-1))))  # max(n_vert,n_bleu) ou n_rouge??
 
         # Construction du vecteur clusters
         vect_cluster = [0]*(sum(n_clusters[1:]))
         for i in range(confusion.shape[0]):
             vect_cluster[i] = np.argmax(confusion[i,:])
 
-        # to relabel clustering results
+        # To relabel clustering results
         clusters_relabeled = self.clusters
         clusters_relabeled[1] = np.where(self.clusters[j] == k, vect_cluster[k], clusters_relabeled[j])
         j = 2
