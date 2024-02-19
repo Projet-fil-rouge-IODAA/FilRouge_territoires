@@ -17,7 +17,9 @@ t2f/selection/__pycache__/
 #
 t2f/utils/__pycache__/
 ### scr cache
-src/__pycache__/
+scr/__pycache__/
+###
+scr/features/__pycache__/
 ### models cache
 models/__pycache__/
 ### results folder
