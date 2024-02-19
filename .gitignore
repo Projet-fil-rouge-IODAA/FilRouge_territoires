@@ -4,3 +4,5 @@ data/raw/
 data/processed/
 ### notebooks cache ###
 notebooks/__pycache__/
+### data/textures/
+data/textures/
