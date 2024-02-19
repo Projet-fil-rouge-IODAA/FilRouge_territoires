@@ -1,4 +1,5 @@
 import streamlit as st
+from streamlit_image_comparison import image_comparison
 
 st.set_page_config(
     page_title="Evolution de territoires",
@@ -41,10 +42,28 @@ def main():
 
     # Utilisez les modèles
     st.subheader("Utilisez les modèles")
+    
     st.slider("Sélectionnez le nombre de clusters: ", min_value=0, max_value=40)
+
     st.selectbox('Sélectionnez la méthodologie à utiliser: ',
                  ["Time2feat", "Combinaison de clusterings"])
+
     st.button("Lancer")
+
+    st.subheader("Visualisez et analysez les résultats")
+
+    # Visualisation des résultats
+    image_comparison(
+    img1="../results/base_image.jpg",
+    img2="../results/cluster_results.jpg",
+    label1="Image originale",
+    label2="Image clusterisée",
+    width=1000,
+    starting_position=50,
+    show_labels=True,
+    make_responsive=True,
+    in_memory=True,
+    )
 
 
 if __name__ == "__main__":

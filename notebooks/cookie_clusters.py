@@ -139,14 +139,10 @@ class afficheur_de_resultats(object):
                              'darkblue', 'darkred', 'darkorange', 'darkviolet',
                              'darkgray', 'lightgray']
 
-    def create_image(self, name_image):
+    def create_image(self, name_image = 'noName.png', cbar = True):
         '''
         Fonction qui permet d'afficher les clusters sur l'image.
         '''
-        OUT_DIR = 'results/'
-
-        if os.path.exists(OUT_DIR) is False:
-            os.mkdir(OUT_DIR)
 
         src = rasterio.open(self.image_path)
         red = src.read(2)
@@ -173,12 +169,20 @@ class afficheur_de_resultats(object):
         # To have high quality images
         # (specially in notebooks for isolated pixels),
         # change the commentent line below.
-        # plt.figure(figsize=(100, 100), dpi=100)
-        plt.figure(figsize=(rgb.shape[1]/100, rgb.shape[0]/100), dpi=100)
-        ax = plt.gca()
-        ax.imshow(rgb, alpha=0.3)
-        clusters = ax.imshow(results, cmap=cookie_map)
-        divider = make_axes_locatable(ax)
-        cax = divider.append_axes("right", size="2%", pad=0.2)
-        plt.colorbar(clusters, cax=cax)
-        plt.savefig(f"{OUT_DIR}{name_image}", bbox_inches="tight")
+        if cbar:
+            plt.figure(figsize=(100, 100), dpi=100)
+            # plt.figure(figsize=(rgb.shape[1]/100, rgb.shape[0]/100), dpi=100)
+            ax = plt.gca()
+            ax.imshow(rgb, alpha=0.3)
+            clusters = ax.imshow(results, cmap=cookie_map)
+            divider = make_axes_locatable(ax)
+            cax = divider.append_axes("right", size="2%", pad=0.2)
+            plt.colorbar(clusters, cax=cax)
+            plt.savefig(f"{name_image}", bbox_inches="tight")
+
+        else:
+            plt.figure(figsize=(100, 100), dpi=100)
+            # plt.figure(figsize=(rgb.shape[1]/100, rgb.shape[0]/100), dpi=100)
+            plt.imshow(rgb, alpha=0.3)
+            plt.imshow(results, cmap=cookie_map)
+            plt.savefig(f"{name_image}", bbox_inches="tight")

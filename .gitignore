@@ -24,4 +24,6 @@ scr/features/__pycache__/
 models/__pycache__/
 ### results folder
 results/
+### Temporary files of the app
+app/temp/
 
