@@ -11,8 +11,9 @@ class CollaborativeClustering():
     def __init__(self, *args):
         self.clusters = args
 
-    def fit_predict(self):
+    def iccm(self):
         '''''
+        Iterative Combining Clusterings Method (ICCM)
         Modèle de collaborative clustering qui prend en entrée la liste des clusters pour chaque méthode qui vote.
         Le modèle renvoie une unique liste de clusters. 
         '''''
