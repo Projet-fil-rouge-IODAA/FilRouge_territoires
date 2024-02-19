@@ -165,7 +165,6 @@ class afficheur_de_resultats(object):
             results[self.pix_list[i][0], self.pix_list[i][1]] = self.yhat[i]+1
         # changes 0 to nan
         results[results == 0] = np.nan
-        results[:50, :50] = 4
 
         cookie_map = colors.ListedColormap(self.class_colors
                                            [:len(np.unique(self.yhat))])
@@ -182,4 +181,4 @@ class afficheur_de_resultats(object):
         divider = make_axes_locatable(ax)
         cax = divider.append_axes("right", size="2%", pad=0.2)
         plt.colorbar(clusters, cax=cax)
-        plt.savefig(f"results/{name_image}", bbox_inches="tight")
+        plt.savefig(f"{OUT_DIR}{name_image}", bbox_inches="tight")

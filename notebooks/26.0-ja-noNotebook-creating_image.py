@@ -33,18 +33,15 @@ t2fresults = np.array([5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5,
                        1, 1, 1, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
                        1, 1, 1, 1, 1, 1, 1, 1, 1])
 
-file = open('/home/julian/FilRouge_territoires/data/processed/ \
-            pixels_de_interet_dic.pkl', 'rb')
+file = open('/home/julian/FilRouge_territoires/data/processed/pixels_de_interet_dic.pkl', 'rb')
 dic_de_pixels = pickle.load(file)
 file.close()
 
-file = open('/home/julian/FilRouge_territoires/data/processed/ \
-            pixels_de_interet_list.pkl', 'rb')
+file = open('/home/julian/FilRouge_territoires/data/processed/pixels_de_interet_list.pkl', 'rb')
 pixels_de_interet = pickle.load(file)
 file.close()
 
-PATH_IMAGE = "/home/julian/FilRouge_territoires/data/raw/ \
-crop_SENTINEL2A_20151226-111142-750_L2A_T31UDQ_D_V1-1.tif"
+PATH_IMAGE = "/home/julian/FilRouge_territoires/data/raw/crop_SENTINEL2A_20151226-111142-750_L2A_T31UDQ_D_V1-1.tif"
 
 results = afficheur_de_resultats(PATH_IMAGE, t2fresults, pixels_de_interet)
-results.create_image('second_test.png')
+results.create_image('just_a_test.png')
