@@ -1,6 +1,7 @@
 # coding=utf-8
 import random as rd
 import numpy as np
+from sklearn.cluster import KMeans
 
 
 class CollaborativeClustering():
@@ -8,8 +9,28 @@ class CollaborativeClustering():
     Ensemble de modèles de collaborative clustering
     '''''
 
-    def __init__(self, *args):
-        self.clusters = args
+    def __init__(self, nombre_clusters):
+        # self.pixels = args
+        self.modele = KMeans(n_clusters=nombre_clusters)
+
+    def initial_clustering(self,*args):
+        '''''
+        format des pixels en entrée, pour chaque bande:
+        [[      ] pixel 1
+         [      ] pixel 2
+           ...
+         [      ] pixel 54
+        ]
+        '''''
+        self.pixels = args
+        n_bandes = len(self.pixels)
+        self.clusters=[]
+        i = 0
+        while i < n_bandes:
+            self.modele.fit(self.pixels[i])
+            i += 1
+
+        
 
     def iccm(self):
         '''''
@@ -51,7 +72,7 @@ class CollaborativeClustering():
         j = 2
         while j<len(n_clusters):
             for k in range(0, n_clusters[j]):
-                clusters_relabeled[j] = np.where(self.clusters[j] == k, vect_cluster[k+sum(n_clusters[1:j-1])], clusters_relabeled[j])
+                clusters_relabeled[j] = np.where(self.clusters[j] == k, vect_cluster[k+sum(n_clusters[1:j])], clusters_relabeled[j])
             j += 1
 
         # Matrice de clusterings "relabeled"
