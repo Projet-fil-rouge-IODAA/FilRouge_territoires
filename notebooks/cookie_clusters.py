@@ -171,7 +171,8 @@ class afficheur_de_resultats(object):
                                            [:len(np.unique(self.yhat))])
 
         # Let's see how our color composite looks like
-        # To have high quality images (specially in notebooks for isolated pixels),
+        # To have high quality images
+        # (specially in notebooks for isolated pixels),
         # change the commentent line below.
         # plt.figure(figsize=(100, 100), dpi=100)
         plt.figure(figsize=(rgb.shape[1]/100, rgb.shape[0]/100), dpi=100)
