@@ -1,8 +1,29 @@
-### data/raw/ (raw images) ###
+### data/raw/ (raw images)
 data/raw/
-#### data/processed/ (is created by build_features.py) ####
+#### data/processed/ (is created by build_features.py)
 data/processed/
-### notebooks cache ###
+### notebooks cache
 notebooks/__pycache__/
 ### data/textures/
 data/textures/
+### t2f cache
+t2f/__pycache__/
+### t2f subfolders cache
+t2f/extraction/__pycache__/
+#
+t2f/model/__pycache__/
+#
+t2f/selection/__pycache__/
+#
+t2f/utils/__pycache__/
+### scr cache
+scr/__pycache__/
+###
+scr/features/__pycache__/
+### models cache
+models/__pycache__/
+### results folder
+results/
+### Temporary files of the app
+app/temp/
+
