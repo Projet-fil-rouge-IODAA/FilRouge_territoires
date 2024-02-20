@@ -64,7 +64,7 @@ file = open('/home/mverlynde/FilRouge_territoires/data/processed/pixels_de_inter
 pixels_de_interet = pickle.load(file)
 file.close()
 
-PATH_IMAGE = "/home/mverlynde/FilRouge_territoires/data/cropped/cropped_crop_SENTINEL2A_20151226-111142-750_L2A_T31UDQ_D_V1-1.tif"
+PATH_IMAGE = "/home/mverlynde/FilRouge_territoires/data/cropped/cropped_crop_SENTINEL2B_20231007-105728-915_L2A_T31UDQ_C_V3-1.tif"
 
 results = afficheur_carte_clusters(PATH_IMAGE, t2fresults, pixels_de_interet)
-results.create_image('just_a_test.png')
+results.create_image('results/just_a_test.png', cbar=True)
