@@ -8,40 +8,8 @@ import shutil
 import json
 import sys 
 
-IN_DIR = "data/raw"
+IN_DIR = "data/cropped"
 OUT_DIR = "data/processed"
-
-# making the output directory
-if os.path.exists(OUT_DIR):
-    shutil.rmtree(OUT_DIR)
-os.mkdir(OUT_DIR)
-name = input("What type of pixel sample do you wish to use? (big, small)")
-
-name_file = "data/pixels/lab_px_test_"+name+".txt"
-
-def create_dic_pixels(name_file):
-    '''
-    Fonction qui permet de creer un dictionnaire avec les pixels de
-    chaque type d'evolution.
-    '''
-    with open(name_file) as f:
-        data = f.read()
-
-    dic = json.loads(data)
-    list = []
-    for v in dic.values():
-        list.extend(v)
-
-    return list, dic
-
-pixels_de_interet, dic_pix = create_dic_pixels(name_file)
-
-# Saving the list and the dictionary as pickle objects.
-with open(OUT_DIR + '/pixels_de_interet_dic.pkl', 'wb') as file:
-    pickle.dump(dic_pix, file)
-
-with open(OUT_DIR + '/pixels_de_interet_list.pkl', 'wb') as file:
-    pickle.dump(pixels_de_interet, file)
 
 images_list = os.listdir(IN_DIR)
 
@@ -59,6 +27,49 @@ images_2A = sorted(images_2A, key=lambda date: date[16:24])
 images_2B = sorted(images_2B, key=lambda date: date[16:24])
 all_images = images_2A + images_2B
 all_images = sorted(all_images, key=lambda date: date[16:24])
+
+# making the output directory
+if os.path.exists(OUT_DIR):
+    shutil.rmtree(OUT_DIR)
+os.mkdir(OUT_DIR)
+name = input("What type of pixel sample do you wish to use? (big, small, or all)")
+
+if name == 'all':
+    x,y = rio.open(IN_DIR + "/" + all_images[0]).read(1).shape
+    pixels_de_interet = []
+    for i in range(x):
+        for j in range(y):
+            pixels_de_interet.append([i,j])
+elif name == 'big' or name == 'small':
+    name_file = "data/pixels/lab_px_test_"+name+".txt"
+else:
+    raise Exception("Sorry, sample name other than big, small or all.")
+
+def create_dic_pixels(name_file):
+    '''
+    Fonction qui permet de creer un dictionnaire avec les pixels de
+    chaque type d'evolution.
+    '''
+    with open(name_file) as f:
+        data = f.read()
+
+    dic = json.loads(data)
+    list = []
+    for v in dic.values():
+        list.extend(v)
+
+    return list, dic
+
+if name == 'big' or name == 'small':
+    pixels_de_interet, dic_pix = create_dic_pixels(name_file)
+
+    # Saving the list and the dictionary as pickle objects.
+    with open(OUT_DIR + '/pixels_de_interet_dic.pkl', 'wb') as file:
+        pickle.dump(dic_pix, file)
+
+with open(OUT_DIR + '/pixels_de_interet_list.pkl', 'wb') as file:
+    pickle.dump(pixels_de_interet, file)
+
 
 # Initiate lists to compose the data frame.
 date = []

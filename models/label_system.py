@@ -30,15 +30,10 @@ def click_event(event, x, y, flag, param):
                     (y, x), font, 1,
                     (255, 255, 0), 2
                     )
-<<<<<<< HEAD
         cv2.putText(img, ("1: Agriculture ; 2: Urban (constant) ;\
                           3: Urban (former forest) ;\
                           4: Urban (former cultures)"),
                     (x, y), font, 1,
-=======
-        cv2.putText(img, ("1: Agriculture ; 2: Urban (constant) ; 3: Urban (former forest) ; 4: Urban (former cultures)"),
-                    (y, x), font, 1,
->>>>>>> dbd0674 (Build features for more pixels)
                     (255, 255, 0), 2)
         cv2.imshow('image', img)
 
@@ -50,8 +45,7 @@ def nothing():
 # driver function
 if __name__ == "__main__":
     # path of the image
-    path_image = 'data/raw/crop_SENTINEL2B_\
-        20211109-110724-649_L2A_T31UDQ_C_V3-0.tif'
+    path_image = 'data/cropped/cropped_crop_SENTINEL2B_20211109-110724-649_L2A_T31UDQ_C_V3-0.tif'
     # reading the image
     src = rasterio.open(path_image)
     red = src.read(2)
