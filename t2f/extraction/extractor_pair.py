@@ -13,7 +13,7 @@ def distance(ts1: np.array, ts2: np.array, distance_feat: str = None):
         'cosine': dist.cosine,
         'euclidean': dist.euclidean,
         'minkowski': dist.minkowski,
-        'dtw': dtw.fastdtw,
+        # 'dtw': dtw.fastdtw,
         # 'mahalanobis': dist.mahalanobis,
         # 'seuclidean': dist.seuclidean,
         # 'sqeuclidean': dist.sqeuclidean,

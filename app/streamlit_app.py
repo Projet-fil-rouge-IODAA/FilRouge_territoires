@@ -85,8 +85,8 @@ def main():
 
         # Visualisation des résultats
         image_comparison(
-        img1="../results/base_image.jpg",
-        img2="../results/cluster_results.jpg",
+        img1="../results/just_a_test_base.png",
+        img2="../results/just_a_test.png",
         label1="Image originale",
         label2="Image clusterisée",
         width=1000,

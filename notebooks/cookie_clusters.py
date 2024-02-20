@@ -170,23 +170,31 @@ class afficheur_de_resultats(object):
         # (specially in notebooks for isolated pixels),
         # change the commentent line below.
         if cbar:
-            plt.figure(figsize=(100, 100), dpi=100)
+            plt.figure(figsize=(30, 30), dpi=100)
             # plt.figure(figsize=(rgb.shape[1]/100, rgb.shape[0]/100), dpi=100)
             ax = plt.gca()
-            ax.imshow(rgb, alpha=0.3)
-            clusters = ax.imshow(results, cmap=cookie_map)
+            ax.imshow(rgb)
+            clusters = ax.imshow(results, cmap=cookie_map, alpha=0.4)
             divider = make_axes_locatable(ax)
             cax = divider.append_axes("right", size="2%", pad=0.2)
             plt.colorbar(clusters, cax=cax)
             if axes is False:
                 plt.axis('off')
-            plt.savefig(f"{name_image}", bbox_inches="tight", pad_inches=0.0)
+            plt.savefig(f"{name_image}.png", bbox_inches="tight", pad_inches=0.0)
 
         else:
-            plt.figure(figsize=(100, 100), dpi=100)
+            plt.figure(figsize=(30, 30), dpi=100)
             # plt.figure(figsize=(rgb.shape[1]/100, rgb.shape[0]/100), dpi=100)
-            plt.imshow(rgb, alpha=0.3)
-            plt.imshow(results, cmap=cookie_map)
+            plt.imshow(rgb)
+            plt.imshow(results, cmap=cookie_map, alpha=0.4)
             if axes is False:
                 plt.axis('off')
-            plt.savefig(f"{name_image}", bbox_inches="tight", pad_inches=0.0)
+            plt.savefig(f"{name_image}.png", bbox_inches="tight", pad_inches=0.0)
+
+        # Image de base sans les clusters :
+        plt.figure(figsize=(30, 30), dpi=100)
+        plt.imshow(rgb)
+        if axes is False:
+            plt.axis('off')
+        plt.savefig(f"{name_image}_base.png", bbox_inches="tight",
+                    pad_inches=0.0)

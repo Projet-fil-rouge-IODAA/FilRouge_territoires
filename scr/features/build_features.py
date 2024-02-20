@@ -34,6 +34,9 @@ if os.path.exists(OUT_DIR):
 os.mkdir(OUT_DIR)
 name = input("What type of pixel sample do you wish to use? (big, small, or all) : ")
 
+with_texture = input("Do you want to add texture bands to the images? (y or n) : ")
+with_texture = (with_texture == 'y')
+
 if name == 'all':
     x,y = rio.open(IN_DIR + "/" + all_images[0]).read(1).shape
     pixels_de_interet = []
@@ -93,9 +96,10 @@ for temp, img in zip(range(len(all_images)), all_images):
     band_r = raster.read(2)
     band_g = raster.read(3)
     band_b = raster.read(4)
-    if texture:
+    if with_texture:
         band_e = raster.read(5)
         band_h = raster.read(6)
+    
 
     for px_x, px_y in pixels_de_interet:
         ir = band_ir[px_x, px_y]
@@ -110,7 +114,8 @@ for temp, img in zip(range(len(all_images)), all_images):
         pixel_r.append(r)
         pixel_g.append(g)
         pixel_b.append(b)
-        if texture:
+
+        if with_texture:
             e = band_e[px_x, px_y]
             h = band_h[px_x, px_y]
             pixel_e.append(e)
@@ -126,7 +131,7 @@ dic = {'date': date,
        'pixel_g': pixel_g,
        'pixel_b': pixel_b}
 
-if texture:
+if with_texture:
     dic['pixel_e'] = pixel_e
     dic['pixel_h'] = pixel_h
 
@@ -150,7 +155,7 @@ matrice_bleu = np.zeros((len(pixels_de_interet), len(all_images)))
 matrice_nir = np.zeros((len(pixels_de_interet), len(all_images)))
 matrice_ndvi = np.zeros((len(pixels_de_interet), len(all_images)))
 matrice_ndwi = np.zeros((len(pixels_de_interet), len(all_images)))
-if texture:
+if with_texture:
     matrice_energy = np.zeros((len(pixels_de_interet), len(all_images)))
     matrice_homogeneity = np.zeros((len(pixels_de_interet), len(all_images)))
 
@@ -160,8 +165,9 @@ for image in all_images:
         band2 = ds.read(2)  # Red.
         band3 = ds.read(3)  # Green.
         band4 = ds.read(4)  # Blue.
-        band5 = ds.read(5)  # Texture Energy.
-        band6 = ds.read(6)  # Texture Homogeneity.
+        if with_texture:
+            band5 = ds.read(5)  # Texture Energy.
+            band6 = ds.read(6)  # Texture Homogeneity.
         # Normalized Difference Vegetation Index.
         ndvi = (band1-band2)/(band1+band2)
         ndvi = np.nan_to_num(ndvi)
@@ -176,7 +182,7 @@ for image in all_images:
         matrice_nir[j, line] = band1[pixel[0], pixel[1]]
         matrice_ndvi[j, line] = ndvi[pixel[0], pixel[1]]
         matrice_ndwi[j, line] = ndwi[pixel[0], pixel[1]]
-        if texture:
+        if with_texture:
             matrice_energy[j, line] = band5[pixel[0], pixel[1]]
             matrice_homogeneity[j, line] = band6[pixel[0], pixel[1]]
     line += 1
@@ -184,8 +190,7 @@ for image in all_images:
 matrix_dic = {'vec_nir': matrice_nir, 'vec_red': matrice_rouge,
               'vec_green': matrice_vert, 'vec_blue': matrice_bleu,
               'vec_ndvi': matrice_ndvi, 'vec_ndwi': matrice_ndwi}
-
-if texture:
+if with_texture:
     matrix_dic['vec_energy'] = matrice_energy
     matrix_dic['vec_homogeneity'] = matrice_homogeneity
 
@@ -200,5 +205,3 @@ for i, matrix in enumerate(list(matrix_dic.values())):
     array3d[:, :, i] = matrix
 arr_reshaped = array3d.reshape(array3d.shape[0], -1)
 np.savetxt(OUT_DIR + f'/{array3d.shape}.csv', arr_reshaped, delimiter=',')
-
-
