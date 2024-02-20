@@ -10,10 +10,11 @@ class CollaborativeClustering():
     Ensemble de modèles de collaborative clustering
     '''''
 
-    def __init__(self, *args, clusters = []):
+    def __init__(self, *args, clusters = [], n_bandes = 3):
         self.pixels = args
         self.modele = AgglomerativeClustering(n_clusters = 4)
         self.clusters = clusters
+        self.n_bandes = n_bandes
 
     def initial_clustering(self):
         '''''
@@ -24,7 +25,6 @@ class CollaborativeClustering():
          [      ] série temporelle pixel 54
         ]
         '''''
-        self.n_bandes = len(self.pixels)
         # self.clusters = []
         i = 0
         while i < self.n_bandes:
