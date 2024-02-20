@@ -55,7 +55,7 @@ class CollaborativeClustering():
                 confusion[i, j] = confusion[i, j]/(max(confusion[i, :].sum(), confusion[:, j].sum())/(self.n_bandes-1))
 
         # Construction du vecteur clusters
-        vect_cluster = [0]*(4*(self.n_bandes-1))
+        vect_cluster = [0]*(self.n_clusters*(self.n_bandes-1))
         for i in range(confusion.shape[0]):
             vect_cluster[i] = np.argmax(confusion[i,:])
 
