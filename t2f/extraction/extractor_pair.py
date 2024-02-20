@@ -1,5 +1,6 @@
 import numpy as np
 import scipy.spatial.distance as dist
+import fastdtw as dtw
 
 
 def distance(ts1: np.array, ts2: np.array, distance_feat: str = None):
@@ -12,14 +13,15 @@ def distance(ts1: np.array, ts2: np.array, distance_feat: str = None):
         'cosine': dist.cosine,
         'euclidean': dist.euclidean,
         'minkowski': dist.minkowski,
+        'dtw': dtw.fastdtw,
         # 'mahalanobis': dist.mahalanobis,
         # 'seuclidean': dist.seuclidean,
         # 'sqeuclidean': dist.sqeuclidean,
     }
     if distance_feat is None:
-        distances = {k: f(ts1, ts2) for k, f in metrics.items()}
+        distances = {k: f(ts1, ts2, dist=dist.euclidean)[0] if k == 'dtw' else f(ts1, ts2) for k, f in metrics.items()}
     else:
-        distances = {distance_feat: metrics[distance_feat](ts1, ts2)}
+        distances = {distance_feat: metrics[distance_feat](ts1, ts2) if distance_feat != 'dtw' else dtw.fastdtw(ts1, ts2, dist = dist.euclidean)[0]}
     return distances
 
 
