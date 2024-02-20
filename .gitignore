@@ -6,6 +6,10 @@ data/processed/
 notebooks/__pycache__/
 ### data/textures/
 data/textures/
+### data/cropped/
+data/cropped/
+### data/with_texture/
+data/with_texture/
 ### t2f cache
 t2f/__pycache__/
 ### t2f subfolders cache
@@ -16,6 +20,8 @@ t2f/model/__pycache__/
 t2f/selection/__pycache__/
 #
 t2f/utils/__pycache__/
+#
+t2f/checkpoint/
 ### scr cache
 scr/__pycache__/
 ###
@@ -26,4 +32,5 @@ models/__pycache__/
 results/
 ### Temporary files of the app
 app/temp/
-
+###
+data/textures.zip
