@@ -27,8 +27,8 @@ def add_texture_bands(folder_image_path, folder_texture_path, output_folder):
             # Get the metadata for the image
             meta = src.meta.copy()
             # Read the texture bands
-            texture_energy = np.load(texture_path_energy)
-            texture_homogeneity = np.load(texture_path_homogeneity)
+            texture_energy = np.load(texture_path_energy) * 1000
+            texture_homogeneity = np.load(texture_path_homogeneity) * 1000
             # Stack the texture bands with the image bands
             nir = nir[1:nir.shape[0]-1, 1:nir.shape[1]-1]
             red = red[1:red.shape[0]-1, 1:red.shape[1]-1]
@@ -103,5 +103,5 @@ texture_output_folder = "data/with_texture"
 # add_texture_bands(folder_path, texture_input_folder, texture_output_folder)
 
 output_folder = "data/cropped"
-coordinates = (430, 380, 480, 400)  # Example coordinates (left, upper, right, lower)
+coordinates = (430, 380, 480, 420)  # Example coordinates (left, upper, right, lower)
 crop_images(texture_output_folder, coordinates, output_folder)
