@@ -20,6 +20,8 @@ t2f/model/__pycache__/
 t2f/selection/__pycache__/
 #
 t2f/utils/__pycache__/
+#
+t2f/checkpoint/
 ### scr cache
 scr/__pycache__/
 ###
