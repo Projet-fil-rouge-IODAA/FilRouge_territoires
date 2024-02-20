@@ -25,12 +25,10 @@ class CollaborativeClustering():
          [      ] série temporelle pixel 54
         ]
         '''''
-        # self.clusters = []
-        i = 0
-        while i < self.n_bandes:
+        
+        for i in range(self.n_bandes):
             self.modele.fit(self.pixels[i])
-            self.clusters.append(list(self.modele.labels_))
-            i += 1
+            self.clusters.append(self.modele.labels_.tolist())
         return self.clusters
 
     def iccm(self):
@@ -48,13 +46,15 @@ class CollaborativeClustering():
         # for i in range(len(yhat_rouge)):
         #     matrice[yhat_vert[i]][yhat_rouge[i]].append(i)
         #     matrice[len(set(yhat_vert))+yhat_bleu[i]][yhat_rouge[i]].append(i)
-
-        for i in range(0, 4):
+        for i in range(len(self.clusters[0])):
             matrice[self.clusters[1][i]][self.clusters[0][i]].append(i)
-            j = 2
-            while j < self.n_bandes:
-                matrice[4*(j-1)+self.clusters[j][i]][self.clusters[0][i]].append(i)
-                j += 1
+            matrice[4+self.clusters[2][i]][self.clusters[0][i]].append(i)
+            # matrice[4*2+self.clusters[3][i]][self.clusters[0][i]].append(i)
+
+            # j = 2
+            # while j < self.n_bandes:
+            #     matrice[4*(j-1)+self.clusters[j][i]][self.clusters[0][i]].append(i)
+            #     j += 1
 
         # Matrice de confusion
         confusion = [[len(matrice[j][i]) for
