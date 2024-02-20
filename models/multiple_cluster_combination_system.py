@@ -29,7 +29,7 @@ class CollaborativeClustering():
         i = 0
         while i < self.n_bandes:
             self.modele.fit(self.pixels[i])
-            self.clusters.append(self.modele.labels_)
+            self.clusters.append(list(self.modele.labels_))
             i += 1
         return self.clusters
 
