@@ -9,10 +9,11 @@ class CollaborativeClustering():
     Ensemble de modèles de collaborative clustering
     '''''
 
-    def __init__(self):
+    def __init__(self, *args):
+        self.pixels = args
         self.modele = HDBSCAN()
 
-    def initial_clustering(self, *args):
+    def initial_clustering(self):
         '''''
         format des pixels en entrée, pour chaque bande:
         [[      ] série temporelle pixel 1
@@ -21,7 +22,6 @@ class CollaborativeClustering():
          [      ] série temporelle pixel 54
         ]
         '''''
-        self.pixels = args
         n_bandes = len(self.pixels)
         self.clusters = []
         i = 0
