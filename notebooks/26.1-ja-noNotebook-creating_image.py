@@ -7,7 +7,7 @@ are not the same as the ones used in the notebook.
 '''
 import pickle
 import numpy as np
-from cookie_clusters import afficheur_carte_clusters
+from cookie_clusters import afficheur_de_resultats
 
 # Artificial import of results comming from The notebook 16.0
 t2fresults = np.array([1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 0, 0,
@@ -61,11 +61,11 @@ t2fresults = np.array([1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 3, 
 # dic_de_pixels = pickle.load(file)
 # file.close()
 
-file = open('/home/mverlynde/FilRouge_territoires/data/processed/pixels_de_interet_list.pkl', 'rb')
+file = open('/home/julian/FilRouge_territoires/data/processed/pixels_de_interet_list.pkl', 'rb')
 pixels_de_interet = pickle.load(file)
 file.close()
 
-PATH_IMAGE = "/home/mverlynde/FilRouge_territoires/data/cropped/cropped_with_texture_crop_SENTINEL2B_20231007-105728-915_L2A_T31UDQ_C_V3-1.tif"
+PATH_IMAGE = "/home/julian/FilRouge_territoires/data/cropped/cropped_with_texture_crop_SENTINEL2B_20231007-105728-915_L2A_T31UDQ_C_V3-1.tif"
 
-results = afficheur_carte_clusters(PATH_IMAGE, t2fresults, pixels_de_interet)
+results = afficheur_de_resultats(PATH_IMAGE, t2fresults, pixels_de_interet)
 results.create_image('results/just_a_test.png', cbar=True)

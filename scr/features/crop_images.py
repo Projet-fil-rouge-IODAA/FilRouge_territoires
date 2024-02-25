@@ -61,13 +61,13 @@ def crop_images(folder_path, coordinates, output_folder):
     """
     # Get a list of all files in the folder
     files = os.listdir(folder_path)
-    
+
     # Filter out non-image files
     image_files = [f for f in files if f.endswith(('.tif', '.tiff'))]
-    
+
     # Create the output folder if it doesn't exist
     os.makedirs(output_folder, exist_ok=True)
-    
+
     # Loop through each image file
     for file_name in image_files:
         # Open the image file
@@ -75,20 +75,20 @@ def crop_images(folder_path, coordinates, output_folder):
         with rasterio.open(image_path) as src:
             # Read the TIFF image
             img = src.read()
-            
+
             # Get the metadata for the image
             meta = src.meta.copy()
-            
+
             # Calculate the window to crop
             left, upper, right, lower = coordinates
             window = Window.from_slices((upper, lower), (left, right))
-            
+
             # Crop the image using the specified window
             cropped_img = src.read(window=window)
-            
+
             # Update metadata with new height and width
             meta['height'], meta['width'] = cropped_img.shape[-2], cropped_img.shape[-1]
-            
+
             # Construct the output file path
             output_file_path = os.path.join(output_folder, f"cropped_{file_name}")
             
@@ -103,5 +103,5 @@ texture_output_folder = "data/with_texture"
 add_texture_bands(folder_path, texture_input_folder, texture_output_folder, 65536)
 
 output_folder = "data/cropped"
-coordinates = (430, 380, 480, 420)  # Example coordinates (left, upper, right, lower)
+coordinates = (430, 400, 480, 420)  # Example coordinates (left, upper, right, lower)
 crop_images(texture_output_folder, coordinates, output_folder)

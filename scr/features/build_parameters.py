@@ -7,6 +7,7 @@ import scipy.cluster.hierarchy as shc
 from kneed import KneeLocator
 import matplotlib.pyplot as plt
 
+
 def find_num_clusters(data, model_type, k_min = 2, k_max = 10, plot_elbow = False, **kwargs):
     """
     This function finds the optimal number of clusters for a given dataset.
