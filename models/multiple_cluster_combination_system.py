@@ -28,7 +28,7 @@ class CollaborativeClustering():
         self.n_bandes = len(self.pixels)
         self.n_clusters = n_clusters
 
-    def dtw_clustering(self, modele = KMedoids):
+    def dtw_clustering(self):
         '''''
         format des pixels en entrée, pour chaque bande:
         [[      ] série temporelle pixel 1
@@ -57,6 +57,12 @@ class CollaborativeClustering():
             embedding = reducer.fit_transform(self.pixels[i])
             hdbscan = HDBSCAN_flat(embedding, cluster_selection_method='eom', n_clusters = self.n_clusters)
             self.clusters.append(hdbscan.labels_.tolist())
+
+        if len(np.unique(self.clusters))>self.n_clusters:
+            self.clusters = np.array(self.clusters)+1
+            self.clusters = self.clusters.tolist()
+            self.n_clusters+=1
+            
         return self.clusters
 
     def iccm(self):
@@ -70,18 +76,14 @@ class CollaborativeClustering():
         for i in range(len(self.clusters[0])):
             for j in range(self.n_bandes-1):
                 matrice[(self.n_clusters*j)+self.clusters[1+j][i]][self.clusters[0][i]].append(i)
-
-        # for i in range(len(clusters[0])):
-    #     matrice[clusters[1][i]][clusters[0][i]].append(i)
-    #     matrice[4+clusters[2][i]][clusters[0][i]].append(i)
-                
+           
         # Matrice de confusion
         confusion = [[len(matrice[j][i]) for i in range(self.n_clusters)] for j in range(self.n_clusters*(self.n_bandes-1))]
         confusion = np.array(confusion).astype(dtype=np.float16)
 
         for i in range(confusion.shape[0]):
             for j in range(confusion.shape[1]):
-                confusion[i, j] = confusion[i, j]/(max(confusion[i, :].sum(), confusion[:, j].sum())/(self.n_clusters-1)) # self.n_clusters???
+                confusion[i, j] = confusion[i, j]/(max(confusion[i, :].sum(), confusion[:, j].sum())/(self.n_bandes-1)) 
 
         # Construction du vecteur clusters
         vect_cluster = [0]*(self.n_clusters*(self.n_bandes-1))
