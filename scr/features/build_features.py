@@ -6,7 +6,6 @@ import numpy as np
 import pickle
 import shutil
 import json
-import sys 
 
 IN_DIR = "data/cropped"
 OUT_DIR = "data/processed"
@@ -72,10 +71,6 @@ if name == 'big' or name == 'small':
 
 with open(OUT_DIR + '/pixels_de_interet_list.pkl', 'wb') as file:
     pickle.dump(pixels_de_interet, file)
-
-# Ask if we want to use texture bands.
-texture = input("Do you want to use texture bands? (y or n) : ")
-texture = (texture == 'y')
 
 # Initiate lists to compose the data frame.
 date = []
