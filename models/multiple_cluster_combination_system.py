@@ -24,7 +24,6 @@ class CollaborativeClustering():
 
     def __init__(self, *args, clusters = [], n_clusters = 4):
         self.pixels = args
-        
         self.clusters = clusters
         self.n_bandes = len(self.pixels)
         self.n_clusters = n_clusters
@@ -38,7 +37,7 @@ class CollaborativeClustering():
          [      ] série temporelle pixel 54
         ]
         '''''
-        self.modele = modele(n_clusters = self.n_clusters, metric='precomputed')
+        self.modele = KMedoids(n_clusters=self.n_clusters, metric='precomputed')
 
         for i in range(self.n_bandes):
             #calcul de la matrice de similarité
@@ -56,7 +55,7 @@ class CollaborativeClustering():
         for i in range(self.n_bandes):
             reducer = umap.UMAP()
             embedding = reducer.fit_transform(self.pixels[i])
-            hdbscan = HDBSCAN_flat(embedding, cluster_selection_method='leaf', n_clusters = self.n_clusters)
+            hdbscan = HDBSCAN_flat(embedding, cluster_selection_method='eom', n_clusters = self.n_clusters)
             self.clusters.append(hdbscan.labels_.tolist())
         return self.clusters
 
@@ -72,6 +71,10 @@ class CollaborativeClustering():
             for j in range(self.n_bandes-1):
                 matrice[(self.n_clusters*j)+self.clusters[1+j][i]][self.clusters[0][i]].append(i)
 
+        # for i in range(len(clusters[0])):
+    #     matrice[clusters[1][i]][clusters[0][i]].append(i)
+    #     matrice[4+clusters[2][i]][clusters[0][i]].append(i)
+                
         # Matrice de confusion
         confusion = [[len(matrice[j][i]) for i in range(self.n_clusters)] for j in range(self.n_clusters*(self.n_bandes-1))]
         confusion = np.array(confusion).astype(dtype=np.float16)
