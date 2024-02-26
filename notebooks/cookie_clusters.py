@@ -269,3 +269,5 @@ def find_num_clusters(data, model_type, k_min=2,
                          ylabel='SSE')
             plt.show()
         return round(kl.elbow)
+    
+

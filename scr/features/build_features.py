@@ -31,13 +31,18 @@ all_images = sorted(all_images, key=lambda date: date[16:24])
 if os.path.exists(OUT_DIR):
     shutil.rmtree(OUT_DIR)
 os.mkdir(OUT_DIR)
-name = input("What type of pixel sample do you wish to use? (big, small, or all) : ")
-
-with_texture = input("Do you want to add texture bands to the images? (y or n) : ")
+# Asking for the pixels to include (uncomment if interactive mode is needed).
+# name = input("What type of pixel sample do you wish to use? (big, small, or all) : ")
+# For a default use:
+name = 'all' # Comment this line if interactive mode is needed.
+# Asking for the use of textures (uncomment if interactive mode is needed).
+#with_texture = input("Do you want to add texture bands to the images? (y or n) : ")
+# For a default use:
+with_texture = 'y' # Comment this line if interactive mode is needed.
 with_texture = (with_texture == 'y')
 
 if name == 'all':
-    x,y = rio.open(IN_DIR + "/" + all_images[0]).read(1).shape
+    x, y = rio.open(IN_DIR + "/" + all_images[0]).read(1).shape
     pixels_de_interet = []
     for i in range(x):
         for j in range(y):
@@ -71,6 +76,13 @@ if name == 'big' or name == 'small':
 
 with open(OUT_DIR + '/pixels_de_interet_list.pkl', 'wb') as file:
     pickle.dump(pixels_de_interet, file)
+
+# Ask if we want to use texture bands. (uncomment if interactive mode is needed)
+# texture = input("Do you want to use texture bands? (y or n) : ")
+# For a default use:
+texture = 'y'
+
+texture = (texture == 'y')
 
 # Initiate lists to compose the data frame.
 date = []

@@ -109,5 +109,10 @@ texture_output_folder = "data/with_texture"
 add_texture_bands(folder_path, texture_input_folder, texture_output_folder, 65536)
 
 output_folder = "data/cropped"
-coordinates = (430, 400, 480, 420)  # Example coordinates (left, upper, right, lower)
+coordinates = (422, 399, 472, 419)  # Example coordinates (left, upper, right, lower)
 crop_images(texture_output_folder, coordinates, output_folder)
+
+# Selected 1000 pixels:
+# - (534, 480, 584, 500)
+# - (422, 399, 472, 419)
+# - (255, 82, 305, 102)

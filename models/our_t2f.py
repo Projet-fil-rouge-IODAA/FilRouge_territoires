@@ -5,10 +5,7 @@ from notebooks.cookie_clusters import find_num_clusters
 from t2f.extraction.extractor import feature_extraction
 from t2f.utils.importance_old import feature_selection
 from t2f.model.clustering import ClusterWrapper
-import os
 import numpy as np
-import pickle
-
 
 
 class Time2Feature(object):
@@ -17,14 +14,10 @@ class Time2Feature(object):
     Time2Feature, qui consiste a extraire des features a partir d'un cube de donnees
     T2F, calcule d'attributs intra instances (using TSFRESH entre bandes) et inter instances
     (using differents mesures de distance entre les pixels).
-    
+
     Parameters
     ----------
-    IN_DIR: le dossier d'entree.
-
-    OUT_DIR: le dossier de sortie.
-
-    cube_taille: la taille du cube de donnees.
+    data_cube: array-like, shape (n_samples, n_timestamps, n_bands)
 
     model_type: le type de modele a utiliser.
 
@@ -41,12 +34,10 @@ class Time2Feature(object):
         utile si l'utilisateur veut utiliser un approche semi-supervisee.
 
     '''
-    def __init__(self, IN_DIR, OUT_DIR, cube_taille, model_type,
-                 transform_type, n_cores, batch_size, n_clusters=0, labels={}):
+    def __init__(self, data_cube, model_type, transform_type,
+                 n_cores, batch_size, n_clusters=0, labels={}):
 
-        self.IN_DIR = IN_DIR
-        self.OUT_DIR = OUT_DIR
-        self.cube_taille = cube_taille
+        self.data_cube = data_cube
         self.model_type = model_type
         self.transform_type = transform_type
         self.n_clusters = n_clusters
@@ -56,28 +47,18 @@ class Time2Feature(object):
 
         # Creating a context dictionary
         self.context = {'model_type': self.model_type,
-                        'transform_type': self.transform_type,
-                        'labels': self.labels}
-
-
-        file = open(f'../{self.IN_DIR}/pixels_de_interet_list.pkl', 'rb')
-        self.pixels_de_interet = pickle.load(file)
-        file.close()
-
-        data_cube = np.loadtxt(f'../{self.IN_DIR}/{self.cube_taille}.csv',
-                               delimiter=",")
-        self.data_cube = data_cube.reshape(cube_taille)
+                        'transform_type': self.transform_type}
 
     def _feature_extraction(self):
         print('Doing feature extraction')
-        self.df_feats = feature_extraction(self.data_cube,
+        self.df_feats_ns = feature_extraction(ts_list=self.data_cube,
                                            batch_size=self.batch_size,
                                            p=self.n_cores)
-        print(f'The shape of the dataset after the feature extraction is {self.df_feats.shape}')
+        print(f'The shape of the dataset after the feature extraction is {self.df_feats_ns.shape}')
 
     def _feature_selection(self):
-        top_feats = feature_selection(self.df_feats, context=self.context)
-        self.df_feats = self.df_feats[top_feats]
+        top_feats = feature_selection(self.df_feats_ns, labels=self.labels ,context=self.context)
+        self.df_feats = self.df_feats_ns[top_feats]
         print(f'The shape of the dataset after the feature selection is {self.df_feats.shape}')
 
     def _n_clusters(self):
@@ -97,6 +78,7 @@ class Time2Feature(object):
                                model_type=self.context['model_type'],
                                transform_type=self.context['transform_type'])
         print(f'Executing {self.context["model_type"]} clustering...')
+        print('End of clustering.')
         return model.fit_predict(self.df_feats)
 
     def entire_t2f(self):

@@ -11,7 +11,7 @@ def _define_model(model_type: str, num_cluster: int):
     if model_type == 'Hierarchical':
         model = AgglomerativeClustering(n_clusters=num_cluster)
     elif model_type == 'KMeans':
-        model = KMeans(n_clusters=num_cluster, n_init=10)
+        model = KMeans(n_clusters=num_cluster, n_init='auto')
     elif model_type == 'Spectral':
         model = SpectralClustering(n_clusters=num_cluster)
     else:
