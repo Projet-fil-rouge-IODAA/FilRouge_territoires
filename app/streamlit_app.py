@@ -54,7 +54,7 @@ def main():
 
     with col1:
         st.subheader("Choisissez un région d'interet")
-        img = Image.open("../results/crop_image.png")
+        img = Image.open("../app/src/crop_image.png")
         cropped_img = st_cropper(img, realtime_update=True, box_color='#0000FF',
                                  aspect_ratio=None)
 

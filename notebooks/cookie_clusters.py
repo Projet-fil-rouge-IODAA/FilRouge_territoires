@@ -4,17 +4,21 @@ Cookie_tools.py est un fichier qui garde les fonctions nécessaires
 '''
 # TODO: docstrings documentation for all methodes.
 # Importation des librairies
-import os
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+import seaborn as sns
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 from matplotlib import colors
 import rasterio
 from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
 from sklearn.metrics import accuracy_score, f1_score
 from sklearn.metrics import calinski_harabasz_score
-import seaborn as sns
+from sklearn_extra.cluster import KMedoids
+from sklearn.cluster import KMeans
+from sklearn.cluster import SpectralClustering
+import scipy.cluster.hierarchy as shc
+from kneed import KneeLocator
 
 
 class evaluator_de_experiences(object):
@@ -180,7 +184,24 @@ class afficheur_de_resultats(object):
             plt.colorbar(clusters, cax=cax)
             if axes is False:
                 plt.axis('off')
-            plt.savefig(f"{name_image}.png", bbox_inches="tight", pad_inches=0.0)
+            plt.savefig(f"{name_image}.png",
+                        bbox_inches="tight",
+                        pad_inches=0.0)
+
+            # Image sans transparence
+            plt.figure(figsize=(30, 30), dpi=100)
+            # plt.figure(figsize=(rgb.shape[1]/100, rgb.shape[0]/100), dpi=100)
+            ax = plt.gca()
+            ax.imshow(rgb)
+            clusters = ax.imshow(results, cmap=cookie_map)
+            divider = make_axes_locatable(ax)
+            cax = divider.append_axes("right", size="2%", pad=0.2)
+            plt.colorbar(clusters, cax=cax)
+            if axes is False:
+                plt.axis('off')
+            plt.savefig(f"{name_image}_no_trans.png",
+                        bbox_inches="tight",
+                        pad_inches=0.0)
 
         else:
             plt.figure(figsize=(30, 30), dpi=100)
@@ -189,12 +210,62 @@ class afficheur_de_resultats(object):
             plt.imshow(results, cmap=cookie_map, alpha=0.4)
             if axes is False:
                 plt.axis('off')
-            plt.savefig(f"{name_image}.png", bbox_inches="tight", pad_inches=0.0)
+            plt.savefig(f"{name_image}.png",
+                        bbox_inches="tight",
+                        pad_inches=0.0)
+
+            plt.figure(figsize=(30, 30), dpi=100)
+            # plt.figure(figsize=(rgb.shape[1]/100, rgb.shape[0]/100), dpi=100)
+            plt.imshow(rgb)
+            plt.imshow(results, cmap=cookie_map)
+            if axes is False:
+                plt.axis('off')
+            plt.savefig(f"{name_image}_no_trans.png",
+                        bbox_inches="tight",
+                        pad_inches=0.0)
 
         # Image de base sans les clusters :
         plt.figure(figsize=(30, 30), dpi=100)
         plt.imshow(rgb)
         if axes is False:
             plt.axis('off')
-        plt.savefig(f"{name_image}_base.png", bbox_inches="tight",
-                    pad_inches=0.0)
+        plt.savefig(f"{name_image}_base.png",
+                    bbox_inches="tight",
+                    pad_inches=0.)
+
+
+def find_num_clusters(data, model_type, k_min=2,
+                      k_max=10, plot_elbow=False, **kwargs):
+    """
+    This function finds the optimal number of clusters for a given dataset.
+    """
+    if model_type not in ['KMedoids', 'KMeans', 'Hierarchical', 'Spectral']:
+        raise ValueError('{} is not supported'.format(model_type))
+    else:
+        sse = []
+        if model_type == 'Hierarchical':
+            model = shc.linkage(data, **kwargs)
+            sse = model[-(k_max-k_min+1):, 2][::-1]
+        elif model_type == 'Spectral':
+            model = SpectralClustering(n_clusters=k_max, **kwargs)
+            model.fit(data)
+            sse, _ = np.linalg.eig(model.affinity_matrix_)
+            sse = np.sort(sse)[::-1]
+            sse = sse[k_min:k_max+1]
+        else:
+            for k in range(k_min, k_max+1):
+                if model_type == 'KMedoids':
+                    model = KMedoids(n_clusters=k, **kwargs)
+                elif model_type == 'KMeans':
+                    model = KMeans(n_clusters=k, **kwargs)
+                model.fit(data)
+                sse.append(model.inertia_)
+        kl = KneeLocator(range(k_min, k_max+1), sse,
+                         curve='convex',
+                         direction='decreasing')
+        if plot_elbow:
+            kl.plot_knee(title=model_type,
+                         xlabel='Number of clusters',
+                         ylabel='SSE')
+            plt.show()
+        return round(kl.elbow)
