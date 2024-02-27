@@ -95,7 +95,7 @@ def crop_images(folder_path, coordinates, output_folder):
 
                 # Construct the output file path
                 output_file_path = os.path.join(output_folder, f"cropped_{file_name}")
-                
+
                 # Write the cropped image to the output folder
                 with rasterio.open(output_file_path, 'w', **meta) as dst:
                     dst.write(cropped_img)
@@ -109,7 +109,7 @@ texture_output_folder = "data/with_texture"
 add_texture_bands(folder_path, texture_input_folder, texture_output_folder, 65536)
 
 output_folder = "data/cropped"
-coordinates = (422, 399, 472, 419)  # Example coordinates (left, upper, right, lower)
+coordinates = (255, 82, 305, 102)  # Example coordinates (left, upper, right, lower)
 crop_images(texture_output_folder, coordinates, output_folder)
 
 # Selected 1000 pixels:
