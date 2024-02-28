@@ -55,13 +55,14 @@ def main():
     with col1:
         st.subheader("Choisissez un région d'interet")
         img = Image.open("../app/src/crop_image.png")
-        cropped_img = st_cropper(img, realtime_update=True, box_color='#0000FF',
-                                 aspect_ratio=None)
+        cropped_img, box = st_cropper(img, realtime_update=True, box_color='#0000FF',
+                                 aspect_ratio=None, return_type='both')
 
         col11, col12 = st.columns(2, gap = 'small')
         with col11:
             _ = cropped_img.thumbnail((400, 200))
             st.image(cropped_img)
+            st.write(str(box))
         with col12:
             st.write("")
             st.write(f"Taille originale: {img.size[0]}px, {img.size[1]}px")
@@ -82,15 +83,27 @@ def main():
 
         executer = st.button("Exécuter")
 
+        if cropped_img.size[0]*cropped_img.size[1] > 2000:
+                st.warning("La taille de votre selection est trop grande. \
+                        Veuillez réduire la taille de votre selection.")
+
     if executer:
         st.subheader("Visualisez et analysez les résultats")
 
+        if not demo and cropped_img.size[0]*cropped_img.size[1] > 2000:
+                st.error("La taille de votre selection est trop grande. \
+                        Veuillez réduire la taille de votre selection. \
+                        \n\
+                        Mode démonstration activé.")
+                demo = True
         if demo:
             img1="../results/base_image.jpg"    
             img2="../results/just_a_test.png"
+            methode, n_clust = "Time2feat", 5
         else:
-            img1="../results/base_image.jpg"    
+            img1=cropped_img    
             img2="../results/just_a_test.png"
+
 
         # Visualisation des résultats
         image_comparison(
