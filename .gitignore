@@ -10,6 +10,12 @@ data/textures/
 data/cropped/
 ### data/with_texture/
 data/with_texture/
+### data/plots/
+data/plots/
+### data/imagettes/
+data/imagettes/
+### data/reports/
+data/reports/
 ### t2f cache
 t2f/__pycache__/
 ### t2f subfolders cache
