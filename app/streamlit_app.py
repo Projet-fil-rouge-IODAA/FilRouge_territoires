@@ -23,16 +23,16 @@ def main():
 
     st.header("Un approache par clustering de series temporelles.")
     st.subheader("Projet fil Rouge - IODAA 2024.")
-    st.markdown("**Auteurs**: Afonso Ponce, Julian Agudelo, \
-                Matthieu Verlynde, \
-                Nada Kassara, Malek Baroudi.")
+    st.markdown("**Auteurs**: Julian Agudelo, Malek Baroudi, \
+                Nada Kassara, \
+                Matthieu Verlynde, Afonso Ponce.")
     # Introduction
     st.header("Introduction")
     st.write("Cette application est un moyen simple de \
              visualiser et d'utiliser \
              les deux principales méthodologies qui ont été \
              développées au cours de ce projet:")
-    st.markdown(f"Un Systéme d'apprentissage de représentations pour le \
+    st.markdown(f"Un Système d'apprentissage de représentations pour le \
                 clustering de séries temporelles multivariées basé sur \
                 [Time2feat](https://www.vldb.org/pvldb/vol16/p193-tiano.pdf).\
                 \n\
@@ -73,20 +73,29 @@ def main():
         n_clust = st.selectbox('Sélectionnez le nombre de clusters: ',
                             ["Automatique", "Personnalisé"])
         if n_clust == "Personnalisé":
-            st.slider("", min_value=0, max_value=40)
+            n_clust = st.slider("", min_value=0, max_value=40)
 
-        st.selectbox('Sélectionnez la méthodologie à utiliser: ',
+        methode = st.selectbox('Sélectionnez la méthodologie à utiliser: ',
                     ["Time2feat", "Combinaison de clusterings"])
+        
+        demo = st.checkbox("Mode démo")
 
         executer = st.button("Exécuter")
 
     if executer:
         st.subheader("Visualisez et analysez les résultats")
 
+        if demo:
+            img1="../results/base_image.jpg"    
+            img2="../results/just_a_test.png"
+        else:
+            img1="../results/base_image.jpg"    
+            img2="../results/just_a_test.png"
+
         # Visualisation des résultats
         image_comparison(
-        img1="../results/just_a_test_base.png",
-        img2="../results/just_a_test.png",
+        img1=img1,
+        img2=img2,
         label1="Image originale",
         label2="Image clusterisée",
         width=1000,
@@ -95,6 +104,10 @@ def main():
         make_responsive=True,
         in_memory=True,
         )
+
+        st.markdown("**Méthode**: "+methode+" \
+                    \n\
+                    **Nombre de clusters**: "+str(n_clust))
 
 
 if __name__ == "__main__":
