@@ -1,4 +1,6 @@
 import time
+import sys
+sys.path.append("/home/mverlynde/FilRouge_territoires")
 from notebooks.cookie_clusters import *
 from multiple_cluster_combination_system import CollaborativeClustering
 import pickle 
@@ -24,22 +26,20 @@ start=time.time()
 COORDS = (255, 82, 305, 102)
 CUBE_SHAPE = (1000, 141, 8)
 PATH_IMAGE = "data/cropped/cropped_with_texture_crop_SENTINEL2B_20231007-105728-915_L2A_T31UDQ_C_V3-1.tif"
-matrice_nir = pd.read_csv('../data/processed/vec_nir.csv').to_numpy()
-matrice_rouge = pd.read_csv('../data/processed/vec_red.csv').to_numpy()
-matrice_vert = pd.read_csv('../data/processed/vec_green.csv').to_numpy()
-matrice_bleu = pd.read_csv('../data/processed/vec_blue.csv').to_numpy()
-matrice_ndvi = pd.read_csv('../data/processed/vec_ndvi.csv').to_numpy()
-matrice_ndwi = pd.read_csv('../data/processed/vec_ndwi.csv').to_numpy()
-matrice_energy = pd.read_csv('../data/processed/vec_energy.csv').to_numpy()
-matrice_homo = pd.read_csv('../data/processed/vec_homogeneity.csv').to_numpy()
-df_name = f'results/vote_inter/{COORDS[0]}_{COORDS[1]}.csv'
-df = pd.read_csv(df_name)
-name_experiment = f'results/collabclustering/1000_pixels_{COORDS[0]}_{COORDS[1]}_collab_3_clusters'
+matrice_nir = pd.read_csv('data/processed/vec_nir.csv').to_numpy()
+matrice_rouge = pd.read_csv('data/processed/vec_red.csv').to_numpy()
+matrice_vert = pd.read_csv('data/processed/vec_green.csv').to_numpy()
+matrice_bleu = pd.read_csv('data/processed/vec_blue.csv').to_numpy()
+matrice_ndvi = pd.read_csv('data/processed/vec_ndvi.csv').to_numpy()
+matrice_ndwi = pd.read_csv('data/processed/vec_ndwi.csv').to_numpy()
+matrice_energy = pd.read_csv('data/processed/vec_energy.csv').to_numpy()
+matrice_homo = pd.read_csv('data/processed/vec_homogeneity.csv').to_numpy()
+name_experiment = f'results/collabclustering/1000_pixels_{COORDS[0]}_{COORDS[1]}_collab_4_clusters'
 file = open('data/processed/pixels_de_interet_list.pkl', 'rb')
 pixels_de_interet = pickle.load(file)
 file.close()
 
-vote_dtw = CollaborativeClustering(matrice_rouge, matrice_nir, matrice_vert, matrice_bleu, matrice_energy, matrice_ndvi, matrice_ndwi, matrice_homo, n_clusters=3)
+vote_dtw = CollaborativeClustering(matrice_rouge, matrice_nir, matrice_vert, matrice_bleu, matrice_energy, matrice_ndvi, matrice_ndwi, matrice_homo, n_clusters=4)
 
 clusters = vote_dtw.umap_hdbscan_clustering()
 yhat = vote_dtw.iccm()

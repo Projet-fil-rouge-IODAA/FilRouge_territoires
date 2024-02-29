@@ -106,10 +106,10 @@ def crop_images(folder_path, coordinates, output_folder):
 folder_path = "data/raw"
 texture_input_folder = "data/textures"
 texture_output_folder = "data/with_texture"
-add_texture_bands(folder_path, texture_input_folder, texture_output_folder, 65536)
+# add_texture_bands(folder_path, texture_input_folder, texture_output_folder, 65536)
 
 output_folder = "data/cropped"
-coordinates = (255, 82, 305, 102)  # Example coordinates (left, upper, right, lower)
+coordinates = (534, 480, 584, 500)  # Example coordinates (left, upper, right, lower)
 crop_images(texture_output_folder, coordinates, output_folder)
 
 # Selected 1000 pixels:
