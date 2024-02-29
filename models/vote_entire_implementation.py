@@ -34,7 +34,7 @@ matrice_ndvi = pd.read_csv('data/processed/vec_ndvi.csv').to_numpy()
 matrice_ndwi = pd.read_csv('data/processed/vec_ndwi.csv').to_numpy()
 matrice_energy = pd.read_csv('data/processed/vec_energy.csv').to_numpy()
 matrice_homo = pd.read_csv('data/processed/vec_homogeneity.csv').to_numpy()
-name_experiment = f'results/collabclustering/1000_pixels_{COORDS[0]}_{COORDS[1]}_collab_4_clusters'
+name_experiment = f'results/collabclustering/1000_pixels_{COORDS[0]}_{COORDS[1]}_collab_2_clusters'
 file = open('data/processed/pixels_de_interet_list.pkl', 'rb')
 pixels_de_interet = pickle.load(file)
 file.close()
