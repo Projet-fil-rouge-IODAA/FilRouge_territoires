@@ -1,10 +1,10 @@
 # Contexte et objectif du projet 
-Les données satellites représentent un outil majeur dans l'étude des territoires, cela de par la richesse en informations que celles-ci apportent de manière régulière, et de par la précision des informations collectées. La mise en évidence de motifs sur des données spatiales est un domaine qui est très présent dans la littérature, mais ceci majoritairement dans le cadre d'études géomatiques à un instant donné, donc sans la prise en compte de l'évolution. \
+Les données satellites représentent un outil majeur dans l'étude des territoires, cela de par la richesse en informations que celles-ci apportent de manière régulière, et de par la précision des informations collectées. La mise en évidence de motifs sur des données spatiales est un domaine qui est très présent dans la littérature, mais ceci majoritairement dans le cadre d'études géomatiques à un instant donné, donc sans la prise en compte de l'évolution.
 
 Dans le cadre de ce projet, nous souhaitons étudier les évolutions du territoire, et donc les motifs apparents entre séries temporelles en prenant compte de la dimension spatiale.
-La zone considérée est une zone d'environ 200 km\textsuperscript{2} entre L'Essonne, les Hauts-de-Seine et le Val-de-Marne entre l'aéroport Paris-Orly et la commune des Ulis, et  comprenant le cluster Paris-Saclay (et le campus Agro Paris-Saclay d'AgroParisTech). \
+La zone considérée est une zone d'environ 200 km\textsuperscript{2} entre L'Essonne, les Hauts-de-Seine et le Val-de-Marne entre l'aéroport Paris-Orly et la commune des Ulis, et  comprenant le cluster Paris-Saclay (et le campus Agro Paris-Saclay d'AgroParisTech).
 
-Les données à notre disposition comptent 177 images satellitaires issues de Sentinel-2A et Sentinel-2B, dont 141 sont déjà classées comme ne comptant pas de couvert nuageux lors d'un précédent prétraitement. Ces images présentent 4 bandes : proche infrarouge (NIR), rouge (R), vert (G) et bleu (B). Le poids de chaque image est de 17 Mo et l'étendue de ces images est de 973 x 2182 pixels, avec une résolution de 10 m, pour une couverture temporelle étendue entre décembre 2015 et octobre 2023. \
+Les données à notre disposition comptent 177 images satellitaires issues de Sentinel-2A et Sentinel-2B, dont 141 sont déjà classées comme ne comptant pas de couvert nuageux lors d'un précédent prétraitement. Ces images présentent 4 bandes : proche infrarouge (NIR), rouge (R), vert (G) et bleu (B). Le poids de chaque image est de 17 Mo et l'étendue de ces images est de 973 x 2182 pixels, avec une résolution de 10 m, pour une couverture temporelle étendue entre décembre 2015 et octobre 2023.
 
 # Transformation des données brutes et création des jeux de données
 
