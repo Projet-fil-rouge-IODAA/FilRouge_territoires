@@ -89,7 +89,7 @@ for file_name in files:
     coord = tuple(list(map(int, coord)))
 
     #concat all lines into one string
-    data = "".join(lines[7:])[8:]
+    data = "".join(lines[5:])[8:]
     data = list(map(int,data.replace("[", "").replace("]", "").replace(",", " ").split()))
     data = np.array(data).reshape(coord[2]-coord[0], coord[3]-coord[1])
 
@@ -152,11 +152,13 @@ for file_name in files:
 
     band_names = ["NIR", "Blue", "Green", "Red", "Energy", "Homogeneity", "NDVI", "NDWI"]
 
+    color_curve = ["r", "g", "b", "c", "m", "y", "k", "orange"]
+
     fig, ax = plt.subplots(2, 4, figsize=(20, 10))
     for i in range(2):
         for j in range(4):
             for c in range(len(plots)):
-                ax[i, j].plot(mean_plots[4*i+j,c])
+                ax[i, j].plot(mean_plots[4*i+j,c], color=color_curve[c], alpha=0.5)
                 # Z = 1.96/sqrt(plots[c].shape[1])
                 # ax[i, j].fill_between(range(0, mean_plots.shape[2]), mean_plots[4*i+j,c] - std_plots[4*i+j,c], mean_plots[4*i+j,c] + std_plots[4*i+j,c], alpha=0.2)
                 ax[i, j].set_title(band_names[4*i+j])
