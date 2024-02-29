@@ -80,5 +80,5 @@ multispectral classification and texture filtering. ISPRS journal of photogramme
 remote sensing, 54(1):50–60.
 
 # Liens utiles : 
-Liste de taches : [Taches](https://docs.google.com/spreadsheets/d/12IO9i0rIVR-RKDQXc6y8nDWCuq3UjpeH08N_X2qjHiY/edit#gid=0) \\
+Liste de taches : [Taches](https://docs.google.com/spreadsheets/d/12IO9i0rIVR-RKDQXc6y8nDWCuq3UjpeH08N_X2qjHiY/edit#gid=0) \
 Diaporama final : [Diaporama](https://docs.google.com/presentation/d/18Yu9UxA4SBvoR4pk4BbsPQTedtHY0RUU/edit?usp=sharing&ouid=105910814065404947173&rtpof=true&sd=true)
