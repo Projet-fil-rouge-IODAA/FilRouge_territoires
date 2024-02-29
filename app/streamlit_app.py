@@ -70,38 +70,46 @@ def main():
             st.write(f"Nombre de pixels dans votre selection: {cropped_img.size[0]*cropped_img.size[1]}")
 
     with col2:
-        st.subheader("Choisissez le nombre de clusters et la méthodologie")
+        st.subheader("Choisissez le nombre de clusters et la méthode")
         n_clust = st.selectbox('Sélectionnez le nombre de clusters: ',
                             ["Automatique", "Personnalisé"])
         if n_clust == "Personnalisé":
-            n_clust = st.slider("", min_value=0, max_value=40)
+            n_clust = st.slider("", min_value=0, max_value=30)
 
         methode = st.selectbox('Sélectionnez la méthodologie à utiliser: ',
                     ["Time2feat", "Combinaison de clusterings"])
-        
+        if methode == "Time2feat":
+             t2f_methode = st.selectbox('Sélectionnez la méthode de clustering à utiliser: ',
+                    ["Hierarchique", "Kmeans"])
+             t2f_methode = st.selectbox('Sélectionnez la méthode de transformation: ',
+                    ["Minmax", "Normalisation standard"])
+        else:
+            vote_methode = st.selectbox('Sélectionnez la méthode à utiliser: ',
+                    ["DTW-Kmedoids", "UMap-HDBSCAN"])
+
         demo = st.checkbox("Mode démo")
 
         executer = st.button("Exécuter")
 
-        if cropped_img.size[0]*cropped_img.size[1] > 2000:
+        if cropped_img.size[0]*cropped_img.size[1] > 1000:
                 st.warning("La taille de votre selection est trop grande. \
                         Veuillez réduire la taille de votre selection.")
 
     if executer:
         st.subheader("Visualisez et analysez les résultats")
 
-        if not demo and cropped_img.size[0]*cropped_img.size[1] > 2000:
+        if not demo and cropped_img.size[0]*cropped_img.size[1] > 1000:
                 st.error("La taille de votre selection est trop grande. \
                         Veuillez réduire la taille de votre selection. \
                         \n\
                         Mode démonstration activé.")
                 demo = True
         if demo:
-            img1="../results/base_image.jpg"    
-            img2="../results/just_a_test.png"
-            methode, n_clust = "Time2feat", 5
+            img1="src/1000_pixels_422_399_base.png"
+            img2="src/1000_pixels_422_399_t2f_KMeans_std_demo.png"
+            methode, n_clust = "Time2feat", 3
         else:
-            img1=cropped_img    
+            img1=cropped_img
             img2="../results/just_a_test.png"
 
 
