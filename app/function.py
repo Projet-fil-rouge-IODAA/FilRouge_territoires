@@ -7,6 +7,8 @@ from t2f.extraction.extractor import feature_extraction
 from t2f.utils.importance_old import feature_selection
 from t2f.model.clustering import ClusterWrapper
 from models.t2f_entire_implementation import our_t2f, save_results
+from models.vote_entire_implementation import save_results_vote
+from models.multiple_cluster_combination_system import CollaborativeClustering
 import numpy as np
 import pickle
 import time
@@ -45,3 +47,44 @@ def t2f_apply(coords, model_type, transform_type):
     save_results(f'{name_experiment}.txt', 't2f', yhat,
                  COORDS,
                  model_type, transform_type, end-start)
+
+
+def collabclust_apply(coords, path_image, model_type, transform_type, number_clusters):
+
+    # add the coords to the crop function
+
+    os.system("make create_data")
+    
+    name_experiment = f'results/collabclustering/experience_page_web'
+
+    start=time.time()
+
+    matrice_nir = pd.read_csv('data/processed/vec_nir.csv').to_numpy()
+    matrice_rouge = pd.read_csv('data/processed/vec_red.csv').to_numpy()
+    matrice_vert = pd.read_csv('data/processed/vec_green.csv').to_numpy()
+    matrice_bleu = pd.read_csv('data/processed/vec_blue.csv').to_numpy()
+    matrice_ndvi = pd.read_csv('data/processed/vec_ndvi.csv').to_numpy()
+    matrice_ndwi = pd.read_csv('data/processed/vec_ndwi.csv').to_numpy()
+    matrice_energy = pd.read_csv('data/processed/vec_energy.csv').to_numpy()
+    matrice_homo = pd.read_csv('data/processed/vec_homogeneity.csv').to_numpy()
+    name_experiment = f'results/collabclustering/1000_pixels_{coords[0]}_{coords[1]}_collab_{number_clusters}_clust'
+    file = open('data/processed/pixels_de_interet_list.pkl', 'rb')
+    pixels_de_interet = pickle.load(file)
+    file.close()
+    
+    vote_dtw = CollaborativeClustering(matrice_rouge, matrice_nir, matrice_vert, matrice_bleu, matrice_energy, matrice_ndvi, matrice_ndwi, matrice_homo, n_clusters=number_clusters)
+
+    if model_type == 'dtw_clustering':
+        clusters = vote_dtw.dtw_clustering()
+    else:
+        clusters = vote_dtw.umap_hdbscan_clustering()
+    yhat = vote_dtw.iccm()
+
+    results = afficheur_de_resultats(path_image, yhat, pixels_de_interet)
+    results.create_image(name_experiment, cbar=False, axes=False)
+
+    end = time.time()
+    print(f"Execution time: {end - start} seconds")
+
+    save_results_vote(f'{name_experiment}.txt', yhat, coords,
+                 model_type, end-start)
