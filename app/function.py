@@ -42,9 +42,11 @@ def our_t2f(model_type, transform_type, data_cube, nombre_clusters, labels, batc
     print(f'End of clustering: {yhat.shape}')
     return yhat
 
-def t2f_aply(coords, path_image, model_type, transform_type):
+def t2f_apply(coords, path_image, model_type, transform_type):
 
-    os.system("make create_data")
+    os.system("make reset_data")
+    os.system(f"python scr/features/crop_images.py --coord {coords[0]} {coords[1]} {coords[2]} {coords[3]}")
+    os.system("python scr/features/build_features.py.py")
 
     COORDS = (255, 82, 305, 102)
     # TODO calculate CUBE_SHAPE first dimension
