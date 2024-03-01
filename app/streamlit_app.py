@@ -55,13 +55,16 @@ def main():
         st.subheader("Choisissez un région d'interet")
         img = Image.open("../app/src/crop_image.png")
         cropped_img, box = st_cropper(img, realtime_update=True, box_color='#0000FF',
-                                 aspect_ratio=None, return_type='both')
+                                      aspect_ratio=None, return_type='both')
+        coords = (box['left'], box['top'],
+                  box['left']+box['width'],
+                  box['top']+box['height'])
 
-        col11, col12 = st.columns(2, gap = 'small')
+        col11, col12 = st.columns(2, gap='small')
         with col11:
             _ = cropped_img.thumbnail((400, 200))
             st.image(cropped_img)
-            st.write(str(box))
+            st.write(coords)
         with col12:
             st.write("")
             st.write(f"Taille originale: {img.size[0]}px, {img.size[1]}px")

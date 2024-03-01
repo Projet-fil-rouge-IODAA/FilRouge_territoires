@@ -12,45 +12,14 @@ import pickle
 import time
 
 
-def our_t2f(model_type, transform_type, data_cube, nombre_clusters, labels, batch_size, n_cores):
-
-    # Imputs zone
-    context = {'model_type': model_type, 'transform_type': transform_type}
-
-    # Feature Extraction
-    df_feats_i = feature_extraction(data_cube, batch_size=batch_size, p=n_cores)
-    print(f'End of feature extraction: {df_feats_i.shape}')
-
-    # Feature Selection
-    top_feats = feature_selection(df_feats_i, labels=labels, context=context)
-    df_feats = df_feats_i[top_feats]
-    print(f'End of feature selection: {df_feats.shape}')
-
-    # Estimating the number of clusters
-    if nombre_clusters == 'auto':
-        n_clusters = fn(data=df_feats, model_type=model_type, k_min=2, k_max=30,
-                        plot_elbow=False)
-        print(f'Estimated number of clusters: {n_clusters}')
-    else:
-        n_clusters = nombre_clusters
-        print(f'You have choised: {n_clusters} clusters')
-
-    # Clustering
-    model = ClusterWrapper(n_clusters=n_clusters, model_type=model_type,
-                           transform_type=transform_type)
-    yhat = model.fit_predict(df_feats)
-    print(f'End of clustering: {yhat.shape}')
-    return yhat
-
-def t2f_apply(coords, path_image, model_type, transform_type):
+def t2f_apply(coords, model_type, transform_type):
 
     os.system("make reset_data")
     os.system(f"python scr/features/crop_images.py --coord {coords[0]} {coords[1]} {coords[2]} {coords[3]}")
     os.system("python scr/features/build_features.py.py")
 
-    COORDS = (255, 82, 305, 102)
-    # TODO calculate CUBE_SHAPE first dimension
-    # CUBE_SHAPE = (, 141, 8)
+    COORDS = coords
+    CUBE_SHAPE = ((coords[2]-coords[0])*(coords[3]-coords[1]), 141, 8)
     PATH_IMAGE = "data/cropped/cropped_with_texture_crop_SENTINEL2B_20231007-105728-915_L2A_T31UDQ_C_V3-1.tif"
     name_experiment = f'results/t2f/experience_page_web'
 
