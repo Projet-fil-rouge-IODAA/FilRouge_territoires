@@ -1,6 +1,7 @@
 import rasterio
 from rasterio.windows import Window
 import os
+import argparse
 import numpy as np
 from time import sleep
 from progress.bar import Bar
@@ -48,8 +49,6 @@ def add_texture_bands(folder_image_path, folder_texture_path, output_folder, coe
                     dst.write(img_with_texture)
                 sleep(0.02)
                 bar.next()
-        
-
 
 
 def crop_images(folder_path, coordinates, output_folder):
@@ -102,15 +101,33 @@ def crop_images(folder_path, coordinates, output_folder):
                 sleep(0.02)
                 bar.next()
 
-# Example usage
-folder_path = "data/raw"
-texture_input_folder = "data/textures"
-texture_output_folder = "data/with_texture"
-# add_texture_bands(folder_path, texture_input_folder, texture_output_folder, 65536)
 
-output_folder = "data/cropped"
-coordinates = (534, 480, 584, 500)  # Example coordinates (left, upper, right, lower)
-crop_images(texture_output_folder, coordinates, output_folder)
+# Example usage
+if __name__ == "__main__":
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-c", "--coord",
+                        nargs='+', type=int,
+                        help='Put the coordinates of the imagette, whitout parenthesis x1 y1 x2 y2')
+
+    args = parser.parse_args()
+
+    if args.coord:
+        COORD = tuple(args.coord)
+        print(COORD)
+        print(type(COORD))
+    else:
+        raise ValueError("You must provide the coordinates using --coord [-c] argument")
+
+    folder_path = "data/raw"
+    texture_input_folder = "data/textures"
+    texture_output_folder = "data/with_texture"
+    add_texture_bands(folder_path, texture_input_folder, texture_output_folder, 65536)
+
+    output_folder = "data/cropped"
+    coordinates = COORD
+    # Example coordinates (left, upper, right, lower)
+    crop_images(texture_output_folder, coordinates, output_folder)
 
 # Selected 1000 pixels:
 # - (534, 480, 584, 500)

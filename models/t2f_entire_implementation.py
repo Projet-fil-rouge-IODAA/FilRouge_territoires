@@ -9,9 +9,6 @@ import numpy as np
 import pickle
 import time
 
-# include the time of the execution
-start = time.time()
-
 def save_results(out_path, t2f_or_vote, y_hat, coords,
                  cluster_method, transform_type, exec_time):
     '''
@@ -149,35 +146,35 @@ def our_t2f_without_extraction(model_type, transform_type, df_feats_i, nombre_cl
 
 ##### Doing ONLY the feature selection and clustering ####
 
-if __name__ == '__main__':
+# if __name__ == '__main__':
 
-    for i in ['Hierarchical', 'KMeans']:
-        for j in ['minmax', 'std']:
+#     for i in ['Hierarchical', 'KMeans']:
+#         for j in ['minmax', 'std']:
 
-            start=time.time()
+#             start=time.time()
 
-            COORDS = (255, 82, 305, 102)
-            CUBE_SHAPE = (1000, 141, 8)
-            PATH_IMAGE = "data/cropped/cropped_with_texture_crop_SENTINEL2B_20231007-105728-915_L2A_T31UDQ_C_V3-1.tif"
-            model_type = i
-            transform_type = j
-            df_name = f'results/t2f_inter/{COORDS[0]}_{COORDS[1]}.csv'
-            df = pd.read_csv(df_name)
-            name_experiment = f'results/t2f/1000_pixels_{COORDS[0]}_{COORDS[1]}_t2f_{model_type}_{transform_type}_3_clusters'
+#             COORDS = (255, 82, 305, 102)
+#             CUBE_SHAPE = (1000, 141, 8)
+#             PATH_IMAGE = "data/cropped/cropped_with_texture_crop_SENTINEL2B_20231007-105728-915_L2A_T31UDQ_C_V3-1.tif"
+#             model_type = i
+#             transform_type = j
+#             df_name = f'results/t2f_inter/{COORDS[0]}_{COORDS[1]}.csv'
+#             df = pd.read_csv(df_name)
+#             name_experiment = f'results/t2f/1000_pixels_{COORDS[0]}_{COORDS[1]}_t2f_{model_type}_{transform_type}_3_clusters'
 
-            file = open('data/processed/pixels_de_interet_list.pkl', 'rb')
-            pixels_de_interet = pickle.load(file)
-            file.close()
+#             file = open('data/processed/pixels_de_interet_list.pkl', 'rb')
+#             pixels_de_interet = pickle.load(file)
+#             file.close()
 
-            yhat = our_t2f_without_extraction(model_type, transform_type, df_feats_i=df,
-                                            nombre_clusters=3, labels={})
+#             yhat = our_t2f_without_extraction(model_type, transform_type, df_feats_i=df,
+#                                             nombre_clusters=3, labels={})
 
-            results = afficheur_de_resultats(PATH_IMAGE, yhat, pixels_de_interet)
-            results.create_image(name_experiment, cbar=False, axes=False)
+#             results = afficheur_de_resultats(PATH_IMAGE, yhat, pixels_de_interet)
+#             results.create_image(name_experiment, cbar=False, axes=False)
 
-            end = time.time()
-            print(f"Execution time: {end - start} seconds")
+#             end = time.time()
+#             print(f"Execution time: {end - start} seconds")
 
-            save_results(f'{name_experiment}.txt', 't2f', yhat,
-                        COORDS,
-                        model_type, transform_type, end-start)
+#             save_results(f'{name_experiment}.txt', 't2f', yhat,
+#                         COORDS,
+#                         model_type, transform_type, end-start)

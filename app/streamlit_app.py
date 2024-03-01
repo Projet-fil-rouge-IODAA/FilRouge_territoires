@@ -37,8 +37,7 @@ def main():
                 [Time2feat](https://www.vldb.org/pvldb/vol16/p193-tiano.pdf).\
                 \n\
                 Un système de combinaison de clusterings basé sur \
-                [Une approche de combinaison de clusterings basée sur le vote itératif] \
-                (https://www.sciencedirect.com/science/article/pii/S131915781930597X).")
+                [Une approche de combinaison de clusterings basée sur le vote itératif](https://www.sciencedirect.com/science/article/pii/S131915781930597X).")
     st.write("Grâce à ces deux approches, l'utilisateur peut obtenir \
              différentes propositions de groupes de pixels à partir de \
              l'image satellite en fonction de l'évolution temporelle.\
