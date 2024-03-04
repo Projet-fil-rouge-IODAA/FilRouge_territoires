@@ -1,6 +1,7 @@
 import rasterio
 from rasterio.windows import Window
 import os
+import shutil
 import argparse
 import numpy as np
 from time import sleep
@@ -122,12 +123,19 @@ if __name__ == "__main__":
     folder_path = "data/raw"
     texture_input_folder = "data/textures"
     texture_output_folder = "data/with_texture"
-    add_texture_bands(folder_path, texture_input_folder, texture_output_folder, 65536)
-
-    output_folder = "data/cropped"
+    if not os.path.exists(texture_output_folder): 
+        add_texture_bands(folder_path, texture_input_folder, texture_output_folder, 65536)
+    
+    cropped_folder = "data/cropped"
     coordinates = COORD
+    output_folder = os.path.join(cropped_folder, str(COORD))
     # Example coordinates (left, upper, right, lower)
-    crop_images(texture_output_folder, coordinates, output_folder)
+
+    if not os.path.exists(output_folder):
+        shutil.rmtree(cropped_folder)
+        os.mkdir(cropped_folder)
+        os.mkdir(output_folder)
+        crop_images(texture_output_folder, coordinates, output_folder)
 
 # Selected 1000 pixels:
 # - (534, 480, 584, 500)

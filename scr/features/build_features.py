@@ -7,7 +7,7 @@ import pickle
 import shutil
 import json
 
-IN_DIR = "data/cropped"
+IN_DIR = os.path.join("data/cropped",os.listdir("data/cropped")[0])
 OUT_DIR = "data/processed"
 
 images_list = os.listdir(IN_DIR)
