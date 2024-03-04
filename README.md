@@ -8,12 +8,11 @@ Les données à notre disposition comptent 177 images satellitaires issues de Se
 
 # Installation
 
-POur exécuter la chaîne de traitement, vous aurez besoin de l'ensemble des dépendances listées dans le fichier `requirements.txt`. Vous pouvez installer ces dépendances en exécutant la ligne de commande suivante :
+Pour exécuter la chaîne de traitement, vous aurez besoin de l'ensemble des dépendances listées dans le fichier `requirements.txt`. Vous pouvez installer ces dépendances en exécutant la ligne de commande suivante :
 
 ```bash
 pip install -U -r requirements.txt
 ```
-
 # Exécution
 
 Pour démarrer l'application et éxecuter la chaîne de traitement, télécharger l'ensemble des images à traiter en format `.tif` dans le dossier `data/raw` et l'ensemble des fichiers `.npy` des textures dans le dossier `data/textures`, puis exécutez la commande suivante :
@@ -21,6 +20,7 @@ Pour démarrer l'application et éxecuter la chaîne de traitement, télécharge
 ```bash
 streamlit run your-path/FilRouge_territoires/app/streamlit_app.py
 ```
+Pour réaliser des expériences personnalisées ou en boucle, dehors de l'application, executer la commande `make create_data`, après se référer aux scripts `models/t2f_entire_implementation.py` et `models/vote_entire_implementation.py`.
 
 [//]: # (Transformation des données brutes et création des jeux de données)
 
