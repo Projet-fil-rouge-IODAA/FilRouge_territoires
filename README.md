@@ -22,13 +22,13 @@ Pour démarrer l'application et éxecuter la chaîne de traitement, télécharge
 streamlit run your-path/FilRouge_territoires/app/streamlit_app.py
 ```
 
-[//]: # Transformation des données brutes et création des jeux de données
+[//]: # (Transformation des données brutes et création des jeux de données)
 
-[//]: # Exécution de Time2Features
+[//]: # (Exécution de Time2Features)
 
-[//]: # Exécution de CollaborativeClustering
+[//]: # (Exécution de CollaborativeClustering)
 
-[//]: # Format des résultats
+[//]: # (Format des résultats)
 
 # Structure du dépôt:
 ```
