@@ -1,5 +1,4 @@
 import sys
-sys.path.append("/home/julian/FilRouge_territoires")
 from notebooks.cookie_clusters import *
 from notebooks.cookie_clusters import find_num_clusters as fn
 from t2f.extraction.extractor import feature_extraction

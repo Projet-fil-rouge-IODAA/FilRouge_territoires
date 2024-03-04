@@ -1,6 +1,5 @@
 import time
 import sys
-sys.path.append("/home/mverlynde/FilRouge_territoires")
 from notebooks.cookie_clusters import *
 from .multiple_cluster_combination_system import CollaborativeClustering
 import pickle 
