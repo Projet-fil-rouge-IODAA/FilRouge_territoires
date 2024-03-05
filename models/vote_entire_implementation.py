@@ -46,6 +46,3 @@ def our_collabclust(model_type, nombre_clusters,
 
 # save_results_vote(f'{name_experiment}.txt', yhat, COORDS,
 #                  'dtw_clustering', end-start)
-
-
-

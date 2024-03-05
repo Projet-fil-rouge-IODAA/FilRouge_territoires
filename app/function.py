@@ -1,6 +1,8 @@
 import sys
-sys.path.append("/home/mverlynde/FilRouge_territoires")
 import os
+HOME_PATH = os.path.expanduser('~')
+sys.path.append(f"{HOME_PATH}/FilRouge_territoires")
+
 from notebooks.cookie_clusters import *
 from notebooks.cookie_clusters import find_num_clusters as fn
 from t2f.extraction.extractor import feature_extraction
