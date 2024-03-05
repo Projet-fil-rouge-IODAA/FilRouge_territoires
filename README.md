@@ -32,23 +32,36 @@ Pour réaliser des expériences personnalisées ou en boucle, dehors de l'applic
 
 # Structure du dépôt:
 ```
-.
-├── DL
+
+├── app
+│   ├── src
+│   └── temp
 ├── data
+│   ├── cropped
+│   │   └── (557, 392, 597, 410)
+│   ├── pixels
 │   ├── processed
-│   └── raw
-├── docs
+│   ├── raw
+│   ├── textures
+│   └── with_texture
 ├── models
 ├── notebooks
-│   ├── __pycache__
 │   └── graphic_src
-├── references
-├── reports
-└── scr
+├── results
+│   ├── collabclustering
+│   ├── t2f
+│   └── t2f_inter
+├── scr
+│   ├── data
+│   └── features
+└── t2f
+    ├── checkpoint
     ├── data
-    ├── features
-    ├── models
-    └── visualization
+    ├── extraction
+    ├── model
+    ├── ranking
+    ├── selection
+    └── utils
 ```
 
 # Bibliographie
