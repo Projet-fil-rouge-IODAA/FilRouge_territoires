@@ -15,10 +15,10 @@ pip install -U -r requirements.txt
 ```
 # Exécution
 
-Pour démarrer l'application et éxecuter la chaîne de traitement, télécharger l'ensemble des images à traiter en format `.tif` dans le dossier `data/raw` et l'ensemble des fichiers `.npy` des textures dans le dossier `data/textures`, puis exécutez la commande suivante :
+Pour démarrer l'application et éxecuter la chaîne de traitement, télécharger l'ensemble des images à traiter en format `.tif` dans le dossier `data/raw` et l'ensemble des fichiers `.npy` des textures dans le dossier `data/textures`, puis exécutez la commande suivante depuis le directoire racine :
 
 ```bash
-streamlit run your-path/FilRouge_territoires/app/streamlit_app.py
+streamlit run app/streamlit_app.py
 ```
 Pour réaliser des expériences personnalisées ou en boucle, dehors de l'application, executer la commande `make create_data`, après se référer aux scripts `models/t2f_entire_implementation.py` et `models/vote_entire_implementation.py`.
 
