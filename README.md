@@ -13,6 +13,12 @@ Pour exécuter la chaîne de traitement, vous aurez besoin de l'ensemble des dé
 ```bash
 pip install -U -r requirements.txt
 ```
+Si vous utilisez un environnement conda, le fichier `environment.yml` est également disponible :
+
+```bash
+conda env create -f environment.yml
+```
+
 # Exécution
 
 Pour démarrer l'application et éxecuter la chaîne de traitement, télécharger l'ensemble des images à traiter en format `.tif` dans le dossier `data/raw` et l'ensemble des fichiers `.npy` des textures dans le dossier `data/textures`, puis exécutez la commande suivante depuis le directoire racine :
@@ -38,7 +44,6 @@ Pour réaliser des expériences personnalisées ou en boucle, dehors de l'applic
 │   └── temp
 ├── data
 │   ├── cropped
-│   │   └── (557, 392, 597, 410)
 │   ├── pixels
 │   ├── processed
 │   ├── raw
